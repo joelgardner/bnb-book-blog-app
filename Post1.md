@@ -1,7 +1,7 @@
 ## Build a new React / Node.js application
 
-### Part 1
-#### Basic technologies: an overview
+### Part 1: Basic technologies overview
+
 ##### Backend
 As stated in the title of this post, we'll use [Node.js](https://nodejs.org) to run our backend code.  For our data store, we'll pick [Postgres](https://www.postgresql.org/).  And we'll serve our API via [GraphQL](http://graphql.org/) to interact with our frontend.  As an alternative to the traditional REST API, it relies not on URLs for accessing resources but customizable queries which allow us to extract only the data we want from our backend.
 
@@ -32,21 +32,30 @@ Additionally, we'll throw in a UI framework called [Bulma](http://bulma.io/).  I
 
 `npm i --save bulma`
 
+##### Testing, testing, 1-2-3
+
+Of course, we also need a way to easily test the code we're writing.  For that, we'll use the [Jest](https://facebook.github.io/jest/) library.  It works well with React, and in fact, it comes bundled with `create-react-app`'s output.  Try running `npm test` (or `npm t`).  It invokes the Jest testrunner, which executes our tests.  See `App.test.js` for an example.  It also would work as `App.spec.js` or `__tests__/*.js`.  More on Jest later.
+
 ##### Productivity libraries
-Some productivity tools that we'll use are [Flow](https://flow.org/), [ESLint](http://eslint.org/), and [Ramda.js](http://ramdajs.com/).
+Some productivity tools that we'll use are [Flow](https://flow.org/), [ESLint](http://eslint.org/),  [Ramda.js](http://ramdajs.com/), and [Immutable.js](https://facebook.github.io/immutable-js/).
 
 With Flow, we can augment our javascript code with  type annotations, which the Flow typechecker can reason about and warn against.  This helps us avoid silly errors that would otherwise manifest at runtime when writing regular javascript.  
 
 ESLint is a tool that will warn us if we stray from our style-guidelines.  It helps us maintain a consistent coding style by enforcing a customizable list of rules.
 
+`npm i --save-dev flow-bin eslint`
 
 Additionally, I'm a big fan of the functional programming style and while [Functors, Applicatives, and Monads](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html) are beyond the scope of this post, it's possible to write javascript in a clean, concise, functional style and that's what we'll aim to do here.
 
 <p style="color:#666">*Object-oriented programming was king for a long time, but there is currently a sea change toward the functional paradigm.*
 
-Javascript has its warts, but the ES6/7 spec has really made for a fun and expressive language.  It's no Haskell, but combined with a library or two, Javascript can truly be a very capable and functional-style language.  We'll use Ramda.js to help us do just that.
+Javascript has its warts, but the ES6/7 spec has really made for a fun and expressive language.  It's no Haskell, but combined with a library or two, Javascript can truly be a very capable and functional-style language.  We'll use Ramda.js to help us do just that.  It provides many helpful utility functions and embraces a encourages a functional style as each method is curried (i.e., you can partially apply it).
 
 <p style="color:#666">*Another great library is [lodash](https://github.com/lodash/lodash)/[fp](https://github.com/lodash/lodash/wiki/FP-Guide).*
+
+Finally, we'll use Immutable.js which is a library of collections that play well with React and Redux because they are... well, immutable.  One way this helps is that it allows for super-fast reference equality checks (think `===` vs `==`) instead of deep comparisons to determine whether or not a component should be re-rendered.  It also allows for cleaner, more readable code in our Redux [reducers](http://redux.js.org/docs/basics/Reducers.html).
+
+`npm i --save immutable ramda`
 
 ##### Hot-reloading
 Anther thing: not a tool per-se but, we want to utilize hot-reloading so that our app automatically updates when we make code changes.
