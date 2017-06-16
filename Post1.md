@@ -2,12 +2,12 @@
 
 ### Part 1: Basic technologies overview
 
-##### Backend
+#### Backend
 As stated in the title of this post, we'll use [Node.js](https://nodejs.org) to run our backend code.  For our data store, we'll pick [Postgres](https://www.postgresql.org/).  And we'll serve our API via [GraphQL](http://graphql.org/) to interact with our frontend.  As an alternative to the traditional REST API, it relies not on URLs for accessing resources but customizable queries which allow us to extract only the data we want from our backend.
 
 >*While we could have chosen a NoSQL data-store like [Mongo](https://www.mongodb.com/) for our data store, I'm a fan of a strictly defined and adhered-to schema.  In the event we need to utilize some NoSQL style functionality, Postgres' `jsonb` type is up to the task.*
 
-##### Frontend
+#### Frontend
 Let's use [React](https://facebook.github.io/react/) and [Redux](http://redux.js.org/), as the pair provides a simple way to reason about the data-flow and state inside our app.  
 
 >*[Vue.js](https://vuejs.org/) is another library that's enjoying a ton of use, and some people swear by it over React.  But as I said earlier, I'm a loyal soldier (and I'm not a big fan of the Angular-like html attributes Vue employs, but to each their own!).*
@@ -32,11 +32,11 @@ Additionally, we'll throw in a UI framework called [Bulma](http://bulma.io/).  I
 
 `npm i --save bulma`
 
-##### Testing, testing, 1-2-3
+#### Testing, testing, 1-2-3
 
 Of course, we also need a way to easily test the code we're writing.  For that, we'll use the [Jest](https://facebook.github.io/jest/) library.  It works well with React, and in fact, it comes bundled with `create-react-app`'s output.  Try running `npm test` (or `npm t`).  It invokes the Jest testrunner, which executes our tests.  See `App.test.js` for an example.  It also would work as `App.spec.js` or `__tests__/*.js`.  More on Jest later.
 
-##### Productivity libraries
+#### Productivity libraries
 Some productivity tools that we'll use are [Flow](https://flow.org/), [ESLint](http://eslint.org/),  [Ramda.js](http://ramdajs.com/), and [Immutable.js](https://facebook.github.io/immutable-js/).
 
 With Flow, we can augment our javascript code with  type annotations, which the Flow typechecker can reason about and warn against.  This helps us avoid silly errors that would otherwise manifest at runtime when writing regular javascript.  
@@ -57,7 +57,7 @@ Finally, we'll use Immutable.js which is a library of collections that play well
 
 `npm i --save immutable ramda`
 
-##### Hot-reloading
+#### Hot-reloading
 Anther thing: not a tool per-se but, we want to utilize hot-reloading so that our app automatically updates when we make code changes.
 
 You might say, "*but, the app is already reloading when I change it!*"  That's true, but it completely refreshes the page.  This is fine for when our app is small and simple, but for a more complex application, a refresh can cause us to lose our place -- or worse -- our state.  *Hot*-reloading simply updates the changed component on the page, without a full page refresh, thus maintaining our state.
@@ -82,4 +82,4 @@ After adding this code, change the code in `App.js` or `App.css` and watch the m
 
 
 #### 'Til next time!
-We're done with our initial setup.  In Part 2 of this post, we'll get our Node server up and running and make our API request.
+We're done with our initial setup.  In Part 2 of this post, we'll get our Node server up and running and make our first API request.
