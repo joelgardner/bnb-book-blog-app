@@ -10,7 +10,7 @@ As stated in the title of this post, we'll use [Node.js](https://nodejs.org) to 
 ##### Frontend
 Let's use [React](https://facebook.github.io/react/) and [Redux](http://redux.js.org/), as the pair provides a simple way to reason about the data-flow and state inside our app.  
 
-<p style="color:#666">*[Vue.js](https://vuejs.org/) is another library that's enjoying a ton of use, and some people swear by it over React.  But as I said earlier, I'm a loyal soldier (and I'm not a big fan of the Angular-like html attributes Vue employs, but to each their own!).*
+>*[Vue.js](https://vuejs.org/) is another library that's enjoying a ton of use, and some people swear by it over React.  But as I said earlier, I'm a loyal soldier (and I'm not a big fan of the Angular-like html attributes Vue employs, but to each their own!).*
 
 We'll use the amazing [create-react-app](https://github.com/facebookincubator/create-react-app) package to supercharge our setup time.  It provides tons of boilerplate we'd otherwise have to write ourselves to get stuff like [Babel](https://babeljs.io/) and [Webpack](https://webpack.js.org/) working.  Run the following:
 
@@ -20,9 +20,9 @@ We'll use the amazing [create-react-app](https://github.com/facebookincubator/cr
 
 After the text stops flowing, drop into our newly created *client* folder and run `npm start`.  Bam! We're off and running.  Visit *http://localhost:3000/* in your browser and you should see the React logo spinning around.
 
-<p style="color:#666">*You really should read all of the documentation on create-react-app's GitHub.  It provides detailed walkthroughs to just about anything you could think to add or change in the default application.*
+>*You really should read all of the documentation on create-react-app's GitHub.  It provides detailed walkthroughs to just about anything you could think to add or change in the default application.*
 
-<p style="color:#666">*Additionally, if you haven't, please, please, please, read the Redux [documentation](http://redux.js.org/docs/introduction/Motivation.html).  Basically, this post will provide some of the "how," but the documentation provides that, plus the "why" -- which is arguably more important!*
+>*Additionally, if you haven't, please, please, please, read the Redux [documentation](http://redux.js.org/docs/introduction/Motivation.html).  Basically, this post will provide some of the "how," but the documentation provides that, plus the "why" -- which is arguably more important!*
 
 Stop the server with *ctrl+c* and we'll also add Redux, its bindings with React.  To facilitate asynchronous actions, we'll use the awesome [Redux Saga](https://github.com/redux-saga/redux-saga) library, which is an alternative to the more traditional [Redux Thunk](https://github.com/gaearon/redux-thunk) middleware plugin.
 
@@ -47,11 +47,11 @@ ESLint is a tool that will warn us if we stray from our style-guidelines.  It he
 
 Additionally, I'm a big fan of the functional programming style and while [Functors, Applicatives, and Monads](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html) are beyond the scope of this post, it's possible to write javascript in a clean, concise, functional style and that's what we'll aim to do here.
 
-<p style="color:#666">*Object-oriented programming was king for a long time, but there is currently a sea change toward the functional paradigm.*
+>*Object-oriented programming was king for a long time, but there is currently a sea change toward the functional paradigm.*
 
 Javascript has its warts, but the ES6/7 spec has really made for a fun and expressive language.  It's no Haskell, but combined with a library or two, Javascript can truly be a very capable and functional-style language.  We'll use Ramda.js to help us do just that.  It provides many helpful utility functions and embraces a encourages a functional style as each method is curried (i.e., you can partially apply it).
 
-<p style="color:#666">*Another great library is [lodash](https://github.com/lodash/lodash)/[fp](https://github.com/lodash/lodash/wiki/FP-Guide).*
+>*Another great library is [lodash](https://github.com/lodash/lodash)/[fp](https://github.com/lodash/lodash/wiki/FP-Guide).*
 
 Finally, we'll use Immutable.js which is a library of collections that play well with React and Redux because they are... well, immutable.  One way this helps is that it allows for super-fast reference equality checks (think `===` vs `==`) instead of deep comparisons to determine whether or not a component should be re-rendered.  It also allows for cleaner, more readable code in our Redux [reducers](http://redux.js.org/docs/basics/Reducers.html).
 
@@ -78,7 +78,7 @@ if (module.hot) {
 
 After adding this code, change the code in `App.js` or `App.css` and watch the magic happen.
 
-<p style="color:#666">*Credit to [superhighfives](https://medium.com/superhighfives) and [this post](https://medium.com/superhighfives/hot-reloading-create-react-app-73297a00dcad) for that one.*
+>*Credit to [superhighfives](https://medium.com/superhighfives) and [this post](https://medium.com/superhighfives/hot-reloading-create-react-app-73297a00dcad) for that one.*
 
 
 #### 'Til next time!
