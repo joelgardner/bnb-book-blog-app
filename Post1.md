@@ -1,0 +1,51 @@
+## Build a new React / Node.js application
+
+### Part 1
+#### Basic technologies: an overview
+##### Backend
+As stated in the title of this post, we'll use [Node.js](https://nodejs.org) to run our backend code.  For our data store, we'll pick [Postgres](https://www.postgresql.org/).  And we'll serve our API via [GraphQL](http://graphql.org/) to interact with our frontend.  As an alternative to the traditional REST API, it relies not on URLs for accessing resources but customizable queries which allow us to extract only the data we want from our backend.
+
+<p style="color:#666">*While we could have chosen a NoSQL data-store like [Mongo](https://www.mongodb.com/) for our data store, I'm a fan of a strictly defined and adhered-to schema.  In the event we need to utilize some NoSQL style functionality, Postgres' `jsonb` type is up to the task.*
+
+##### Frontend
+Let's use [React](https://facebook.github.io/react/) and [Redux](http://redux.js.org/), as the pair provides a simple way to reason about the data-flow and state inside our app.  
+
+<p style="color:#666">*[Vue.js](https://vuejs.org/) is another library that's enjoying a ton of use, and some people swear by it over React.  But as I said earlier, I'm a loyal soldier (and I'm not a big fan of the Angular-like html attributes Vue employs, but to each their own!).*
+
+We'll use the amazing [create-react-app](https://github.com/facebookincubator/create-react-app) package to supercharge our setup time.  It provides tons of boilerplate we'd otherwise have to write ourselves to get stuff like [Babel](https://babeljs.io/) and [Webpack](https://webpack.js.org/) working.  Run the following:
+
+`npm i -g create-react-app`
+
+`create-react-app client`
+
+After the text stops flowing, drop into our newly created *client* folder and run `npm start`.  Bam! We're off and running.  Visit *http://localhost:3000/* in your browser and you should see the React logo spinning around.
+
+<p style="color:#666">*You really should read all of the documentation on create-react-app's GitHub.  It provides detailed walkthroughs to just about anything you could think to add or change in the default application.*
+
+<p style="color:#666">*Additionally, if you haven't, please, please, please, read the Redux [documentation](http://redux.js.org/docs/introduction/Motivation.html).  Basically, this post will provide some of the "how," but the documentation provides that, plus the "why" -- which is arguably more important!*
+
+Stop the server with *ctrl+c* and we'll also add Redux, its bindings with React.  To facilitate asynchronous actions, we'll use the awesome [Redux Saga](https://github.com/redux-saga/redux-saga) library, which is an alternative to the more traditional [Redux Thunk](https://github.com/gaearon/redux-thunk) middleware plugin.
+
+`npm i --save redux react-redux redux-saga`
+
+Additionally, we'll throw in a UI framework called [Bulma](http://bulma.io/).  It's strictly CSS; no javascript, which is comforting.  It's got great documentation and lots of stars on Github.
+
+`npm i --save bulma`
+
+##### Miscellanous / Productivity
+Some productivity tools that we'll use are [Flow](https://flow.org/) and [ESLint](http://eslint.org/).
+
+With Flow, we can augment our javascript code with  type annotations, which the Flow typechecker can reason about and warn against.  This helps us avoid silly errors that would otherwise manifest at runtime when writing regular javascript.  
+
+ESLint is a tool that will warn us if we stray from our style-guidelines.  It helps us maintain a consistent coding style by enforcing a customizable list of rules.
+
+Additionally, I'm a big fan of the functional programming style and while [Functors, Applicatives, and Monads](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html) are beyond the scope of this post, it's possible to write javascript in a clean, concise, functional style and that's what we'll aim to do here.
+
+<p style="color:#666">*Object-oriented programming was king for a long time, but there is currently a sea change toward the functional paradigm.*
+
+Javascript has its warts, but the ES6/7 spec has really made for a fun and expressive language.  It's no Haskell, but combined with a library or two, Javascript can truly be a very capable and functional-style language.  We'll use [Ramda.js](http://ramdajs.com/) to help us do just that.
+
+<p style="color:#666">*Another great library is [lodash](https://github.com/lodash/lodash)/[fp](https://github.com/lodash/lodash/wiki/FP-Guide).*
+
+#### 'Til next time!
+We're done with our initial setup.  In Part 2 of this post, we'll get our Node server up and running and make our API request.
