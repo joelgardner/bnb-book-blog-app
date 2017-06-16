@@ -32,20 +32,45 @@ Additionally, we'll throw in a UI framework called [Bulma](http://bulma.io/).  I
 
 `npm i --save bulma`
 
-##### Miscellanous / Productivity
-Some productivity tools that we'll use are [Flow](https://flow.org/) and [ESLint](http://eslint.org/).
+##### Productivity libraries
+Some productivity tools that we'll use are [Flow](https://flow.org/), [ESLint](http://eslint.org/), and [Ramda.js](http://ramdajs.com/).
 
 With Flow, we can augment our javascript code with  type annotations, which the Flow typechecker can reason about and warn against.  This helps us avoid silly errors that would otherwise manifest at runtime when writing regular javascript.  
 
 ESLint is a tool that will warn us if we stray from our style-guidelines.  It helps us maintain a consistent coding style by enforcing a customizable list of rules.
 
+
 Additionally, I'm a big fan of the functional programming style and while [Functors, Applicatives, and Monads](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html) are beyond the scope of this post, it's possible to write javascript in a clean, concise, functional style and that's what we'll aim to do here.
 
 <p style="color:#666">*Object-oriented programming was king for a long time, but there is currently a sea change toward the functional paradigm.*
 
-Javascript has its warts, but the ES6/7 spec has really made for a fun and expressive language.  It's no Haskell, but combined with a library or two, Javascript can truly be a very capable and functional-style language.  We'll use [Ramda.js](http://ramdajs.com/) to help us do just that.
+Javascript has its warts, but the ES6/7 spec has really made for a fun and expressive language.  It's no Haskell, but combined with a library or two, Javascript can truly be a very capable and functional-style language.  We'll use Ramda.js to help us do just that.
 
 <p style="color:#666">*Another great library is [lodash](https://github.com/lodash/lodash)/[fp](https://github.com/lodash/lodash/wiki/FP-Guide).*
+
+##### Hot-reloading
+Anther thing: not a tool per-se but, we want to utilize hot-reloading so that our app automatically updates when we make code changes.
+
+You might say, "*but, the app is already reloading when I change it!*"  That's true, but it completely refreshes the page.  This is fine for when our app is small and simple, but for a more complex application, a refresh can cause us to lose our place -- or worse -- our state.  *Hot*-reloading simply updates the changed component on the page, without a full page refresh, thus maintaining our state.
+
+To enable hot-reloading, all we have to do is add some code to the bottom of our `src/index.js` file:
+
+```js
+if (module.hot) {
+  module.hot.accept('./App', () => {
+    const NextApp = require('./App').default
+    ReactDOM.render(
+      <NextApp />,
+      document.getElementById('root')
+    )
+  })
+}
+```
+
+After adding this code, change the code in `App.js` or `App.css` and watch the magic happen.
+
+<p style="color:#666">*Credit to [superhighfives](https://medium.com/superhighfives) and [this post](https://medium.com/superhighfives/hot-reloading-create-react-app-73297a00dcad) for that one.*
+
 
 #### 'Til next time!
 We're done with our initial setup.  In Part 2 of this post, we'll get our Node server up and running and make our API request.
