@@ -24,7 +24,7 @@ After the text stops flowing, drop into our newly created *client* folder and ru
 
 >*Additionally, if you haven't, please, please, please, read the Redux [documentation](http://redux.js.org/docs/introduction/Motivation.html).  Basically, this post will provide some of the "how," but the documentation provides that, plus the "why" -- which is arguably more important!*
 
-Stop the server with *ctrl+c* and we'll also add Redux, its bindings with React.  To facilitate asynchronous actions, we'll use the awesome [Redux Saga](https://github.com/redux-saga/redux-saga) library, which is an alternative to the more traditional [Redux Thunk](https://github.com/gaearon/redux-thunk) middleware plugin.
+Stop the server with *ctrl+c* and we'll also add Redux and its bindings with React.  To facilitate asynchronous actions, we'll use the awesome [Redux Saga](https://github.com/redux-saga/redux-saga) library, which is an alternative to the more traditional [Redux Thunk](https://github.com/gaearon/redux-thunk) middleware plugin.
 
 `npm i --save redux react-redux redux-saga`
 
@@ -49,31 +49,41 @@ Let's configure ESLint.  Run the following:
 
 `./node_modules/.bin/eslint --init`
 
-It will bring up an interactive prompt that will ask how you want to set up your styling.  You can choose to have it ask you questions about your style or just run with a popular style-guide such as AirBnB or Google's.  Once that's done, just run:
+It will bring up an interactive prompt that will ask how you want to set up your styling.  You can choose to have it ask you questions about your style or just run with a popular style-guide such as AirBnB or Google's.  The end result is a new file called `.eslint`, which can be JS, YAML, or JSON.  Once that's done, just run the follow to lint our code:
 
 `./node_modules/.bin/eslint src/index.js`
 
 You'll notice that it's marking variables as unused even though we're using them as JSX:
 
-`12:11  error  'NextApp' is assigned a value but never used  no-unused-vars`
+```
+1:8    error  'React' is defined but never used  no-unused-vars
+12:11  error  'App' is assigned a value but never used  no-unused-vars
+```
 
-To alleviate this, add the following rule to the `"rules"` property in our `eslintrc.json`:
+To alleviate this, add the following two rules to the `"rules"` property in our `.eslintrc` file:
 
-`"react/jsx-uses-vars": 1`
+```
+"react/jsx-uses-react": 1,
+"react/jsx-uses-vars": 1
+```
 
-Now, let's add a `"lint"` command to our `package.json`'s `scripts` property':
+With these rules, the linter will no longer incorrectly complain about unused variables.
 
-`"lint": "./node_modules/.bin/eslint src/index.js || true"`
+Now, let's add a `lint` command to our `package.json`'s `scripts` property':
+
+`"lint": "./node_modules/.bin/eslint src/*.js || true"`
 
 Now, to lint our app, we simply run `npm run lint`.  The `|| true` suppresses the typical npm error boilerplate (go ahead, try running `npm run lint` with and without the `|| true` present.)
 
 > Whew!  ESLint definitely adds some setup overhead but is invaluable in helping maintain clean, consistent code.  We'll re-visit it periodically to update our rules.
 
+#### Function junction
+
 I'm a big fan of the functional programming style and while [Functors, Applicatives, and Monads](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html) are beyond the scope of this post, it's possible to write javascript in a clean, concise, functional style and that's what we'll aim to do here.
 
 >*Object-oriented programming was king for a long time, but there is currently a sea change toward the functional paradigm.*
 
-Javascript has its warts, but the ES6/7 spec has really made for a fun and expressive language.  It's no Haskell, but combined with a library or two, Javascript can truly be a very capable and functional-style language.  We'll use Ramda.js to help us do just that.  It provides many helpful utility functions and embraces a encourages a functional style as each method is curried (i.e., you can partially apply it).
+Javascript has its warts, but the ES6/7 spec has really made for a fun and expressive language.  It's no Haskell, but combined with a library or two, Javascript can truly be a very capable and functional-style language.  We'll use Ramda.js to help us with this.  It provides many helpful utility functions that embrace and encourage functional code as each method is curried (i.e., you can partially apply it).
 
 >*Another great library is [lodash](https://github.com/lodash/lodash)/[fp](https://github.com/lodash/lodash/wiki/FP-Guide).*
 
@@ -81,8 +91,8 @@ Finally, we'll use Immutable.js which is a library of collections that play well
 
 `npm i --save immutable ramda`
 
-#### Hot-reloading
-Anther thing: not a tool per-se but, we want to utilize hot-reloading so that our app automatically updates when we make code changes.
+#### The new hotness
+We want to utilize hot-reloading so that our app automatically updates when we make code changes.
 
 You might say, "*but, the app is already reloading when I change it!*"  That's true, but it completely refreshes the page.  This is fine for when our app is small and simple, but for a more complex application, a refresh can cause us to lose our place -- or worse -- our state.  *Hot*-reloading simply updates the changed component on the page, without a full page refresh, thus maintaining our state.
 
