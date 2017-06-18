@@ -228,5 +228,5 @@ One last change: in `api.js`, remove the `http://localhost:3001` part of the URL
 
 Now, pressing the *Calculate!* button should display text indicating the result.
 
-**** Now for a real app
+#### Now for a real app
 This has been... uhh, fun.  Sure.  But the end result is that we have a client that can interact with our backend via an API.  In our next post, we'll create a realistic app that uses GraphQL to communicate with our backend.  Keep reading!
