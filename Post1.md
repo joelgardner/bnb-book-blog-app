@@ -45,7 +45,31 @@ ESLint is a tool that will warn us if we stray from our style-guidelines.  It he
 
 `npm i --save-dev flow-bin eslint`
 
-Additionally, I'm a big fan of the functional programming style and while [Functors, Applicatives, and Monads](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html) are beyond the scope of this post, it's possible to write javascript in a clean, concise, functional style and that's what we'll aim to do here.
+Let's configure ESLint.  Run the following:
+
+`./node_modules/.bin/eslint --init`
+
+It will bring up an interactive prompt that will ask how you want to set up your styling.  You can choose to have it ask you questions about your style or just run with a popular style-guide such as AirBnB or Google's.  Once that's done, just run:
+
+`./node_modules/.bin/eslint src/index.js`
+
+You'll notice that it's marking variables as unused even though we're using them as JSX:
+
+`12:11  error  'NextApp' is assigned a value but never used  no-unused-vars`
+
+To alleviate this, add the following rule to the `"rules"` property in our `eslintrc.json`:
+
+`"react/jsx-uses-vars": 1`
+
+Now, let's add a `"lint"` command to our `package.json`'s `scripts` property':
+
+`"lint": "./node_modules/.bin/eslint src/index.js || true"`
+
+Now, to lint our app, we simply run `npm run lint`.  The `|| true` suppresses the typical npm error boilerplate (go ahead, try running `npm run lint` with and without the `|| true` present.)
+
+> Whew!  ESLint definitely adds some setup overhead but is invaluable in helping maintain clean, consistent code.  We'll re-visit it periodically to update our rules.
+
+I'm a big fan of the functional programming style and while [Functors, Applicatives, and Monads](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html) are beyond the scope of this post, it's possible to write javascript in a clean, concise, functional style and that's what we'll aim to do here.
 
 >*Object-oriented programming was king for a long time, but there is currently a sea change toward the functional paradigm.*
 
