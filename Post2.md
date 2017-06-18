@@ -226,6 +226,8 @@ async function send(url, options) {
 }
 
 ```
+> It's worth noting here that we're using the new `async`/`await` syntax in ES7.  This allows us to write asynchronous code (i.e., send a fetch request) as if it were synchronous.  If the network request fails for some reason, we return a rejected Promise, which is captured in the `catch` by the calling function (`handleClick`).  Nice!
+
 Make sure you're running both the client (`npm start`) and the server (`npm run watch`).  Navigate to `localhost:3000`, and (finally) enter numbers into the inputs and click *Calculate!*.
 
 Whaaa?  The astute observer might've already made the connection that an app running on `localhost:3000` can't send a request to `localhost:3001` without the appropriate [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) headers.
