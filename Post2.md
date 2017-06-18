@@ -105,7 +105,7 @@ Now, run the following:
 
 You should see that the server is now `Listening on port 3001.`  Try running `curl localhost:3001?a=1\&b=2`.  You'll see that 1 + 2 is in fact 3.  Woohoo!
 
-You might be thinking: "that's a lot of work to get a Node app up and running."  Definitely.  And it's part of the boilerplate I mentioned in Part #1, except this time we don't have `create-react-app` holding our hand to run it on the server.  But, once it's done, it's done, and we can add commands to our `package.json`'s `scripts` property to make life easier:
+You might be thinking: "that's a lot of work to get a Node app up and running."  Definitely.  And it's part of the boilerplate mentioned in Part #1, except this time we don't have `create-react-app` holding our hand to run it on the server.  But, once it's done, it's done, and we can add commands to our `package.json`'s `scripts` property to make life easier:
 
 ```json
 "babel": "./node_modules/.bin/babel src --out-dir out",
