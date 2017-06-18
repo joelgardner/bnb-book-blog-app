@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/jest",
     "babel": "./node_modules/.bin/babel src --out-dir out",
     "build": "npm run check && rm -rf out/ && npm run babel",
     "check": "npm run lint && npm run flow",
@@ -33,6 +33,7 @@
     "eslint-plugin-flow-header": "^0.1.1",
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-react": "^7.1.0",
-    "flow-bin": "^0.48.0"
+    "flow-bin": "^0.48.0",
+    "jest": "^20.0.4"
   }
 }

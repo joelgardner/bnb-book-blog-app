@@ -5,7 +5,7 @@
 #### Structure
 Just like we created a `client` folder in Part #1, we'll create a `server` directory now.  In our top-level directory:
 
-`mkdir server && cd server/ && npm init --yes && mkdir src test && touch src/index.js`
+`mkdir server && cd server/ && npm init --yes && mkdir src __tests__ && touch src/index.js`
 
 This will create our folder, and add another (empty) `package.json` to it.  Let's add our productivity tools from Part #1:
 
@@ -45,11 +45,25 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// we'll change this line
-app.get('/', (req, res) => res.send('Hello World'));
+// we'll change these lines
+import sum from './sum'
+app.get('/', (req, res) => {
+  const a = parseInt(req.query.a);
+  const b = parseInt(req.query.b);
+  res.send(`${a} + ${b} = ${sum(a, b)}\n`)
+});
 
 app.listen(3001, () => console.log('Listening on port 3001.'));
 ```
+
+Additionally, create a `sum.js` file in `src` with contents:
+
+```js
+export default function sum(a, b) {
+  return a + b
+}
+```
+
 Now if we tried `node src/index.js` at this point, Node would complain:
 
 ```
@@ -60,15 +74,15 @@ import express from 'express';
 SyntaxError: Unexpected token import
 ```
 
-That's because we need to use babel to transpile ES6/7 code to the type of javascript code that Node understands (which, to be fair, understands quite a bit of ES6/7, but it does not support `import` statements yet).
+That's because we need to use Babel to transpile ES6/7 code to the type of javascript code that Node understands (to be fair, Node understands quite a bit of ES6/7, but it does not yet support `import` statements).
 
-So let's install babel and its sub-dependencies:
+So let's install Babel and its sub-dependencies:
 
 `npm i --save-dev babel-cli babel-eslint babel-plugin-transform-class-properties babel-plugin-transform-flow-strip-types babel-preset-env eslint-plugin-babel eslint-plugin-flow-header eslint-plugin-flowtype eslint-plugin-react`
 
 Yeah... it's quite a bit.  Suffice it to say we're installing the main Babel CLI package plus a bunch of Babel plugins, presets, and a few more eslint plugins.
 
-> Note, in newer versions of Node (>= 8), a "lock file" is created by the above command: `npm notice created a lockfile as package-lock.json. You should commit this file.` We'll take npm's word for it and commit this file.
+> Note, in newer versions of npm (>= 5?), a "lock file" is created by the above command: `npm notice created a lockfile as package-lock.json. You should commit this file.` We'll take npm's word for it and commit this file.
 
 Now, we'll add a `.babelrc` file in our `server` folder, which Babel needs in order to transpile our code:
 
@@ -90,9 +104,9 @@ Now, run the following:
 
 `./node_modules/.bin/babel-node src/index.js`
 
-You should see that the server is now `Listening on port 3001.`  Try running `curl localhost:3001`.  Woohoo!
+You should see that the server is now `Listening on port 3001.`  Try running `curl localhost:3001?a=1\&b=2`.  You'll see that 1 + 2 is in fact 3.  Woohoo!
 
-You might be thinking: "that's a lot of work to get a Node app with `import` statements up and running."  Definitely.  And it's part of the boilerplate I mentioned in Part #1, except we don't have `create-react-app` holding our hands to run it on the server.  But, once it's done, it's done, and we can add commands to our `package.json`'s `scripts` property to make life easier:
+You might be thinking: "that's a lot of work to get a Node app up and running."  Definitely.  And it's part of the boilerplate I mentioned in Part #1, except this time we don't have `create-react-app` holding our hand to run it on the server.  But, once it's done, it's done, and we can add commands to our `package.json`'s `scripts` property to make life easier:
 
 ```json
 "babel": "./node_modules/.bin/babel src --out-dir out",
@@ -107,3 +121,27 @@ You might be thinking: "that's a lot of work to get a Node app with `import` sta
 The last one, `watch`, uses [nodemon](https://nodemon.io/).  If you don't have it installed, do so with `npm i -g nodemon`.  This is the command we'll use when we're developing, as it restarts our app when it notices a change.
 
 `build` will copy the babel output to a folder `out` (assuming we can `npm run check` without issues).  As such, we'll add a line to our project's `.gitignore`: `server/out`.  This is so we don't commit our build artifacts to source control.
+
+The rest of the commands should be familiar and/or self-explanatory.
+
+#### Where are the tests!?
+
+We must not forget to test, so let's install Jest (remember, we got it for free with `create-react-app` in `client` but we aren't using `create-react-app` here in `server`, so we must be explicit).
+
+`npm i --save-dev jest`
+
+In our `__tests__` folder, create a file `index.js`, and set its conents to:
+
+```js
+import sum from '../src/sum'
+
+test('adds 1 + 2 to equal 3', () => {
+  expect(sum(1, 2)).toBe(3);
+});
+```
+
+Then a simple `./node_modules/.bin/jest` should run our test.  Let's make life easier by editing our `package.json`'s `test` command under the `scripts` property to look like so:
+
+`"test": "./node_modules/.bin/jest"`
+
+Now we can run our tests by doing `npm test` (or even `npm t`!).
