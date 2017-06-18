@@ -226,7 +226,7 @@ async function send(url, options) {
 }
 
 ```
-> It's worth noting here that we're using the new `async`/`await` syntax in ES7.  This allows us to write asynchronous code (i.e., send a fetch request) as if it were synchronous.  If the network request fails for some reason, we return a rejected Promise, which is captured in the `catch` by the calling function (`handleClick`).  Nice!
+> It's worth noting here that we're using the new `async`/`await` syntax in ES7.  This allows us to write asynchronous code (i.e., send a fetch request) as if it were synchronous.  If the request fails, we return a rejected Promise, which is captured in the `catch` by the calling function (`handleClick`).  Nice!
 
 Make sure you're running both the client (`npm start`) and the server (`npm run watch`).  Navigate to `localhost:3000`, and (finally) enter numbers into the inputs and click *Calculate!*.
 
