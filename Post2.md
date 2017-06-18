@@ -13,4 +13,8 @@ This will create our folder, and add another (empty) `package.json` to it.  Let'
 
 `npm i --save-dev eslint flow-bin`
 
-> It would of course be nice if we could re-use our previous `.eslint.*` file from the client folder.  Further down, we'll do just that.  But for now, let's keep this separate one.
+It would be great if we could re-use our previous `.eslint.*` file from the client folder.  Luckily, it's super easy to do so.  Just move the `.eslint.*` file up and out of `client`.  In our top-level directory:
+
+`mv client/eslint.json .`
+
+Check to see that `npm run lint` still works (you'll need to `cd` into `client`, of course).  And now we can use it to also lint our server javascript as well.
