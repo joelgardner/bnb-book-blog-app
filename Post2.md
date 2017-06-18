@@ -49,7 +49,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 import sum from './sum'
 app.get('/', (req, res) => {
   const { a, b } = req.query;
-  res.send(`${a} + ${b} = ${sum(+a, +b)}\n`)
+  res.send(sum(+a, +b).toString())   // coerce a and b into integers with +
 });
 
 app.listen(3001, () => console.log('Listening on port 3001.'));
@@ -144,3 +144,89 @@ Then a simple `./node_modules/.bin/jest` should run our test.  Let's make life e
 `"test": "./node_modules/.bin/jest"`
 
 Now we can run our tests by doing `npm test` (or even `npm t`!).
+
+#### Hitting the API from our app
+
+A curl request is nice, but we're building an app here.  Let's make the connection between our client and server.
+For now, we'll assume that our app is a calculator that adds two numbers.  
+
+> Would you look at that!  We've already built that capability on the backend.  How convenient.
+
+So, let's switch over to our `client` project.  We'll need a way for the user to enter two numbers, and a way for the client to request that the server add these numbers and return the result.  I can envision two inputs and a button.  Change your `App.js` to look like the following:
+
+```js
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import { sum } from './api'
+
+class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      a: 0,
+      b: 0,
+      sum: null
+    }
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <div>
+          <span>A</span>
+          <input type="number" defaultValue={this.state.a} onChange={e => this.setState({ a: e.target.value })} />
+        </div>
+        <div>
+          <span>B</span>
+          <input type="number" defaultValue={this.state.b} onChange={e => this.setState({ b: e.target.value })} />
+        </div>
+        <div>
+          <button onClick={() => this.handleClick(this.state.a, this.state.b)}>Calculate!</button>
+        </div>
+        <span>{this.state.sum === null ? '' : `The sum is ${this.state.sum}`}</span>
+      </div>
+    );
+  }
+
+  async handleClick(a, b) {
+     const result = await sum(a, b)
+     this.setState({ sum: result })
+  }
+}
+
+export default App;
+```
+
+As you can see, we have two inputs and a button.  When the button is clicked, we'll use the `sum` import from our `api.js`, which looks like this:
+
+```js
+export function sum(a, b) {
+  return fetch(`http://localhost:3001/sum?a=${a}&b=${b}`)
+  .then(result => result.text())
+  .catch(e => console.log(e))
+}
+```
+Make sure you're running both the client (`npm start`) and the server (`npm run watch`).  Navigate to `localhost:3000`, and (finally) enter numbers into the inputs and click *Calculate!*.
+
+Whaaa?  The astute observer might've already made the connection that an app running on `localhost:3000` can't send a request to `localhost:3001` without the appropriate [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) headers.
+
+Sure enough, we'll see a bunch of red text in the browser's console that looks like the following:
+```
+Fetch API cannot load http://localhost:3001/sum?a=-2&b=2. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://localhost:3000' is therefore not allowed access. The response had HTTP status code 500. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+```
+
+Everything's OK, we just need to tweak our `client/package.json` file a bit.  `create-react-app` sets up a service to serve our client app on `localhost:3000`, but our backend server is running on `localhost:3001`.  Luckily, we can tell our client app to proxy requests over to our backend app by adding the following line to `client/package.json`'s top level:
+
+```json
+"proxy": "http://localhost:3001"
+```
+
+This is forces the client server to forward requests to our backend server.
+
+One last change: in `api.js`, remove the `http://localhost:3001` part of the URL, so that it's just `/sum?a=${a}&b=${b}`.
+
+Now, pressing the *Calculate!* button should display text indicating the result.
+
+**** Now for a real app
+This has been... uhh, fun.  Sure.  But the end result is that we have a client that can interact with our backend via an API.  In our next post, we'll create a realistic app that uses GraphQL to communicate with our backend.  Keep reading!
