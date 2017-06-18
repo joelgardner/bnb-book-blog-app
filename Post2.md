@@ -37,22 +37,26 @@ Now, in `src/index.js` (which is empty), let's add:
 
 ```js
 // @flow
-'use strict';
-import express from 'express';
-import bodyParser from 'body-parser';
+'use strict'
+import express from 'express'
+import bodyParser from 'body-parser'
 
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const app = express()
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // we'll change these lines
 import sum from './sum'
-app.get('/', (req, res) => {
-  const { a, b } = req.query;
-  res.send(sum(+a, +b).toString())   // coerce a and b into integers with +
-});
+app.get('/sum', (req, res) => {
+  const { a, b } = req.query
+  res.status(200).send(sum(+a, +b).toString())   // coerce a and b into integers with +
+})
 
-app.listen(3001, () => console.log('Listening on port 3001.'));
+app.listen(3001, () => {
+  /* eslint-disable no-console */
+  console.log('Listening on port 3001.')
+  /* eslint-enable no-console */
+})
 ```
 
 Additionally, create a `sum.js` file in `src` with contents:
@@ -103,7 +107,7 @@ Now, run the following:
 
 `./node_modules/.bin/babel-node src/index.js`
 
-You should see that the server is now `Listening on port 3001.`  Try running `curl localhost:3001?a=1\&b=2`.  You'll see that 1 + 2 is in fact 3.  Woohoo!
+You should see that the server is now `Listening on port 3001.`  Try running `curl localhost:3001/sum?a=1\&b=2`.  You'll see that 1 + 2 is in fact 3.  Woohoo!
 
 You might be thinking: "that's a lot of work to get a Node app up and running."  Definitely.  And it's part of the boilerplate mentioned in Part #1, except this time we don't have `create-react-app` holding our hand to run it on the server.  But, once it's done, it's done, and we can add commands to our `package.json`'s `scripts` property to make life easier:
 
