@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { sum } from './api'
+import * as api from './api'
 
 class App extends Component {
   constructor() {
@@ -9,7 +9,8 @@ class App extends Component {
     this.state = {
       a: 0,
       b: 0,
-      sum: null
+      sum: null,
+      error: null
     }
   }
 
@@ -28,13 +29,19 @@ class App extends Component {
           <button onClick={() => this.handleClick(this.state.a, this.state.b)}>Calculate!</button>
         </div>
         <span>{this.state.sum === null ? '' : `The sum is ${this.state.sum}`}</span>
+        <span style={{ color:'#f00' }}>{this.state.error}</span>
       </div>
     );
   }
 
   async handleClick(a, b) {
-     const result = await sum(a, b)
-     this.setState({ sum: result })
+    try {
+      const result = await api.sum(a, b)
+      this.setState({ sum: result, error: null })
+    }
+    catch (e) {
+      this.setState({ error: e.toString(), sum: null })
+    }
   }
 }
 

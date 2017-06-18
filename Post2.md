@@ -162,7 +162,7 @@ So, let's switch over to our `client` project.  We'll need a way for the user to
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { sum } from './api'
+import * as api from './api'
 
 class App extends Component {
   constructor() {
@@ -170,7 +170,8 @@ class App extends Component {
     this.state = {
       a: 0,
       b: 0,
-      sum: null
+      sum: null,
+      error: null
     }
   }
 
@@ -189,13 +190,19 @@ class App extends Component {
           <button onClick={() => this.handleClick(this.state.a, this.state.b)}>Calculate!</button>
         </div>
         <span>{this.state.sum === null ? '' : `The sum is ${this.state.sum}`}</span>
+        <span style={{ color:'#f00' }}>{this.state.error}</span>
       </div>
     );
   }
 
   async handleClick(a, b) {
-     const result = await sum(a, b)
-     this.setState({ sum: result })
+    try {
+      const result = await api.sum(a, b)
+      this.setState({ sum: result, error: null })
+    }
+    catch (e) {
+      this.setState({ error: e.toString(), sum: null })
+    }
   }
 }
 
@@ -206,10 +213,18 @@ As you can see, we have two inputs and a button.  When the button is clicked, we
 
 ```js
 export function sum(a, b) {
-  return fetch(`http://localhost:3001/sum?a=${a}&b=${b}`)
-  .then(result => result.text())
-  .catch(e => console.log(e))
+  return send(`http://localhost:3001/sum?a=${a}&b=${b}`)
 }
+
+async function send(url, options) {
+  const res = await fetch(url, options)
+  if (!res.ok) {
+    const err = new Error(await res.text())
+    return Promise.reject(err)
+  }
+  return res.text()
+}
+
 ```
 Make sure you're running both the client (`npm start`) and the server (`npm run watch`).  Navigate to `localhost:3000`, and (finally) enter numbers into the inputs and click *Calculate!*.
 
