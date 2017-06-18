@@ -36,6 +36,20 @@ Additionally, we'll throw in a UI framework called [Bulma](http://bulma.io/).  I
 
 Of course, we also need a way to easily test the code we're writing.  For that, we'll use the [Jest](https://facebook.github.io/jest/) library.  It works well with React, and in fact, it comes bundled with `create-react-app`'s output.  Try running `npm test` (or `npm t`).  It invokes the Jest testrunner, which executes our tests.  See `App.test.js` for an example.  It also would work as `App.spec.js` or `__tests__/*.js`.  More on Jest later.
 
+#### Project-wide .gitignore
+`create-react-app` adds a nice default `.gitignore` file to our `client` directory.  But ideally we want the `.gitignore` to apply to the entire project structure.  Let's hoist it out of `client` and into our top-level directory:
+
+`mv client/.gitignore .`
+
+Additionally, we'll make a change to it to ignore all `node_modules` directories.  Here's the diff of the change we want:
+
+```diff
++ node_modules/
+- /node_modules
+```
+
+Moving the slash to the end will force git to ignore all module folders, instead of only ones inside the same directory as the `.gitignore` file.
+
 #### Productivity libraries
 Some productivity tools that we'll use are [Flow](https://flow.org/), [ESLint](http://eslint.org/),  [Ramda.js](http://ramdajs.com/), and [Immutable.js](https://facebook.github.io/immutable-js/).
 
