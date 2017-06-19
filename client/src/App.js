@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
 import * as api from './api'
 
 class App extends Component {
@@ -31,7 +30,7 @@ class App extends Component {
         <span>{this.state.sum === null ? '' : `The sum is ${this.state.sum}`}</span>
         <span style={{ color:'#f00' }}>{this.state.error}</span>
       </div>
-    );
+    )
   }
 
   async handleClick(a, b) {
@@ -45,4 +44,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App

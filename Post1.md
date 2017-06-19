@@ -53,9 +53,9 @@ Moving the slash to the end will force git to ignore all module folders, instead
 #### Productivity libraries
 Some productivity tools that we'll use are [Flow](https://flow.org/), [ESLint](http://eslint.org/),  [Ramda.js](http://ramdajs.com/), and [Immutable.js](https://facebook.github.io/immutable-js/).
 
-With Flow, we can augment our javascript code with  type annotations, which the Flow typechecker can reason about and warn against.  This helps us avoid silly errors that would otherwise manifest at runtime when writing regular javascript.  
+With Flow, we can augment our javascript code with type annotations, which the Flow typechecker can use to help us avoid silly errors (invalid property access, incorrect type assumptions, typos, etc.) that would otherwise manifest at runtime when writing regular javascript.  
 
-ESLint is a tool that will warn us if we stray from our style-guidelines.  It helps us maintain a consistent coding style by enforcing a customizable list of rules.
+ESLint is a tool that warns us if we stray from our style-guidelines.  It helps us maintain a consistent coding style by enforcing a customizable list of rules.
 
 `npm i --save-dev flow-bin eslint`
 
@@ -83,11 +83,25 @@ To alleviate this, add the following two rules to the `"rules"` property in our 
 
 With these rules, the linter will no longer incorrectly complain about unused variables.
 
+We'll also add the following line to our `.eslintrc.*` file under the `parserOptions` key:
+
+`"ecmaVersion": 8`
+
+This is so we can use the awesome new `async`/`await` keywords without the linter yelling at us.
+
 Now, let's add a `lint` command to our `package.json`'s `scripts` property':
 
 `"lint": "./node_modules/.bin/eslint src/*.js || true"`
 
 Now, to lint our app, we simply run `npm run lint`.  The `|| true` suppresses the typical npm error boilerplate (go ahead, try running `npm run lint` with and without the `|| true` present.)
+
+Next up, the age-old question: to use semi-colons or not?  We will choose the *not* option.  Some people like them, some people don't.  It's purely preference, but the important thing is that we pick a rule and **stick with it**.
+
+If you *do* want to use semi-colons, simply switch the `"never"` to `"always"` in your `.eslintrc.*` for the `"semi"` rule.
+
+We're almost there.  Lint complains because our `App.test.js` contains the `it` keyword which has not been defined, as it is a global provided by Jest.  To fix this, add the following to `.eslintrc.*`'s `env` key:
+
+`"jest": true`
 
 > Whew!  ESLint definitely adds some setup overhead but is invaluable in helping maintain clean, consistent code.  We'll re-visit it periodically to update our rules.
 
