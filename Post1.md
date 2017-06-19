@@ -95,11 +95,13 @@ Now, let's add a `lint` command to our `package.json`'s `scripts` property':
 
 Now, to lint our app, we simply run `npm run lint`.  The `|| true` suppresses the typical npm error boilerplate (go ahead, try running `npm run lint` with and without the `|| true` present.)
 
-Next up, the age-old question: to use semi-colons or not?  We will choose the *not* option.  Some people like them, some people don't.  It's purely preference, but the important thing is that we pick a rule and **stick with it**.
+You're probably getting lots of "unnecessary semi-colon" warnings.  This brings up the age-old question: to use semi-colons or not?  We will choose the *not* option.  Some people like them, some people don't.  It's purely preference, but the important thing is that we pick a rule and **stick with it**.
 
 If you *do* want to use semi-colons, simply switch the `"never"` to `"always"` in your `.eslintrc.*` for the `"semi"` rule.
 
-We're almost there.  Lint complains because our `App.test.js` contains the `it` keyword which has not been defined, as it is a global provided by Jest.  To fix this, add the following to `.eslintrc.*`'s `env` key:
+Whatever you choose, take this opportunity to add/remove the semi-colons where the Linter says they should/shouldn't be.
+
+We're almost there!  Now, Lint complains because our `App.test.js` contains the `it` keyword which has not been defined, as it is a global provided by Jest.  To fix this, add the following to `.eslintrc.*`'s `env` key:
 
 `"jest": true`
 
@@ -111,7 +113,7 @@ I'm a big fan of the functional programming style and while [Functors, Applicati
 
 >*Object-oriented programming was king for a long time, but there is currently a sea change toward the functional paradigm.*
 
-Javascript has its warts, but the ES6/7 spec has really made for a fun and expressive language.  It's no Haskell, but combined with a library or two, Javascript can truly be a very capable and functional-style language.  We'll use Ramda.js to help us with this.  It provides many helpful utility functions that embrace and encourage functional code as each method is curried (i.e., you can partially apply it).
+Javascript has its warts, but the ECMAScript spec has really made for a fun and expressive language.  It's no Haskell, but combined with a library or two, Javascript can truly be a very capable and functional-style language.  We'll use Ramda.js to help us with this.  It provides many helpful utility functions that embrace and encourage functional code as each method is curried (i.e., you can [partially apply](http://ramdajs.com/docs/#__) it).
 
 >*Another great library is [lodash](https://github.com/lodash/lodash)/[fp](https://github.com/lodash/lodash/wiki/FP-Guide).*
 
