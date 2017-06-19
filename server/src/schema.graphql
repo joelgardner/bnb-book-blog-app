@@ -1,0 +1,45 @@
+type User {
+  id: ID!
+  email: String!
+}
+
+type LocalAuth {
+  id: ID!
+  user: User!
+  password: String!
+}
+
+type Property {
+  id: ID!
+  owner: User!
+  address: Address
+  rooms: [Room]
+}
+
+type Address {
+  street1: String!
+  street2: String
+  city: String!
+  state: String!
+}
+
+type Room {
+  id: ID!
+  name: String!
+  price: Float
+  description: String
+  image: File
+}
+
+type File {
+  id: ID!
+  url: String!
+}
+
+type Query {
+  getUser(id: ID!) : User
+}
+
+type Mutation {
+  createUser(email: String!) : User
+}
