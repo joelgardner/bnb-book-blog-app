@@ -72,7 +72,7 @@ This is a very basic schema that will allow us to build our B&B Booking app.  It
 
 >As far as schemas go, this is about as simple as you can get in GraphQL, which is capable of much more than what we'll use for this simple application.  Go ahead and read the GraphQL [documentation](http://graphql.org/learn/) to get a feel for the possibilities.
 
-Now let's install the Graphql library:
+Now let's install the GraphQL library:
 
 `npm i --save graphql`
 
@@ -108,10 +108,13 @@ type Mutation {
   createUser(email: String!) : User
 }
 ```
-Create a `gateway` folder in `src`, and inside it, add a `resolver.js` with contents:
+Create a `gateway` folder in `src`, and inside it, add a `resolvers.js` with contents:
 
 ```
+import R from 'ramda'
+
 const users = [
+  { id: 0, email: 'toby@dundermifflin.com' },
   { id: 1, email: 'jim@dundermifflin.com' },
   { id: 2, email: 'pam@dundermifflin.com' },
   { id: 3, email: 'dwight@dundermifflin.com' },
@@ -119,12 +122,13 @@ const users = [
   { id: 5, email: 'andy@dundermifflin.com' },
 ]
 
-export function getUser({ id }, _, context) {
-  return Promise.resolve(users[id])
+export function getUser({ id }, context) {
+  return users[id]
 }
 
-export const Mutation = {
-
+export function createUser({ email }, context) {
+  users.push({ id: users.length, email })
+  return R.last(users)
 }
 ```
 
@@ -148,12 +152,12 @@ async function init() {
   app.use(bodyParser.urlencoded({ extended: true }))
 
   // read in the schema.graphql file, and build our schema with it
-  const readFile = promisify(fs.readFile)
-  const gql = await readFile(`${__dirname}/schema.graphql`, 'utf8')
-  const schema = buildSchema(gql)
+  const readFile : (string, string) => Promise<string> = promisify(fs.readFile)
+  const gql : string = await readFile(`${__dirname}/schema.graphql`, 'utf8')
+  const schema : Object = buildSchema(gql)
   app.post('/graphql', async (req, res) => {
-    const { query, args } = req.body;
-    const result = await graphql(schema, query, Root, {/* context */}, args)
+    const { query, args } = req.body
+    const result : Object = await graphql(schema, query, Root, { user: 'Bill' }, args)
     res.send(result)
   })
 
@@ -165,12 +169,20 @@ async function init() {
 }
 ```
 
-Let's test our Graphql endpoint.  Run the following curl request:
+We're now listening at `/graphql` for requests.  Let's test our endpoint.  Run the following curl request:
 
 `curl -X POST localhost:3000/graphql -H "content-type: application/json" -d '{ "query": "query GetUserById($id: ID!) { getUser(id: $id) { id email } }", "args": { "id": 3 } }'`
 
 You should be getting the response:
 
-`{"data":{"getUser":{"id":"4","email":"michael@dundermifflin.com"}}}`
+`{"data":{"getUser":{"id":"3","email":"dwight@dundermifflin.com"}}}`
 
-Woohoo!
+Woohoo!  Let's create a new user:
+
+`curl -X POST localhost:3000/graphql -H "content-type: application/json" -d '{ "query": "mutation CreateUser($email: String!) { createUser(email: $email) { id email } }", "args": { "email": "kevin@dundermifflin.com" } }'`
+
+This should return:
+
+`{"data":{"createUser":{"id":"6","email":"kevin@dundermifflin.com"}}}`
+
+It's good to include Kevin.  If you run the above GraphQL *query* (as opposed to the *mutation*), with the `id` changed to `6`, we'll also get Kevin back, proving he's now in our "database."

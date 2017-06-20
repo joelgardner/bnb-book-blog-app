@@ -89,6 +89,10 @@ We'll also add the following line to our `.eslintrc.*` file under the `parserOpt
 
 This is so we can use the awesome new `async`/`await` keywords without the linter yelling at us.
 
+Next, add this line to the top-level of `.eslintrc.*`:
+
+`"parser": "babel-eslint"`
+
 Now, let's add a `lint` command to our `package.json`'s `scripts` property':
 
 `"lint": "./node_modules/.bin/eslint src/*.js || true"`

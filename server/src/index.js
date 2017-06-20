@@ -15,12 +15,12 @@ async function init() {
   app.use(bodyParser.urlencoded({ extended: true }))
 
   // read in the schema.graphql file, and build our schema with it
-  const readFile = promisify(fs.readFile)
-  const gql = await readFile(`${__dirname}/schema.graphql`, 'utf8')
-  const schema = buildSchema(gql)
+  const readFile : (string, string) => Promise<string> = promisify(fs.readFile)
+  const gql : string = await readFile(`${__dirname}/schema.graphql`, 'utf8')
+  const schema : Object = buildSchema(gql)
   app.post('/graphql', async (req, res) => {
-    const { query, args } = req.body;
-    const result = await graphql(schema, query, Root, {/* context */}, args)
+    const { query, args } = req.body
+    const result : Object = await graphql(schema, query, Root, { user: 'Bill' }, args)
     res.send(result)
   })
 

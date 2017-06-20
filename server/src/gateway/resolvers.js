@@ -1,4 +1,7 @@
+import R from 'ramda'
+
 const users = [
+  { id: 0, email: 'toby@dundermifflin.com' },
   { id: 1, email: 'jim@dundermifflin.com' },
   { id: 2, email: 'pam@dundermifflin.com' },
   { id: 3, email: 'dwight@dundermifflin.com' },
@@ -6,10 +9,11 @@ const users = [
   { id: 5, email: 'andy@dundermifflin.com' },
 ]
 
-export function getUser({ id }, _, context) {
-  return Promise.resolve(users[id])
+export function getUser({ id }, context) {
+  return users[id]
 }
 
-export const Mutation = {
-
+export function createUser({ email }, context) {
+  users.push({ id: users.length, email })
+  return R.last(users)
 }
