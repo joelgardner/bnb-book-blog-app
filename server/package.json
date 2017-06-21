@@ -11,7 +11,9 @@
     "lint": "./node_modules/.bin/eslint src/*.js || true",
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
     "babel-node": "./node_modules/.bin/babel-node src/index.js",
-    "watch": "nodemon --exec \"npm run babel-node\""
+    "watch": "nodemon --exec \"npm run babel-node\"",
+    "migrate": "./node_modules/.bin/db-migrate up --config scripts/database/database.json --migrations-dir scripts/database/migrations/",
+    "create-migration": ""
   },
   "keywords": [],
   "author": "",
@@ -29,6 +31,8 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-env": "^1.5.2",
+    "db-migrate": "^0.10.0-beta.20",
+    "db-migrate-pg": "^0.1.11",
     "eslint": "^4.0.0",
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-flow-header": "^0.1.1",

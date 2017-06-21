@@ -1,0 +1,11 @@
+{
+  "dev": {
+    "driver": "pg",
+    "user": "postgres",
+    "password": "",
+    "host": "localhost",
+    "database": "bnb-book",
+    "schema": "public"
+  },
+  "sql-file": true
+}
