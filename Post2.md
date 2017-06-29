@@ -1,6 +1,6 @@
 ## Build a new React / Node.js application
 
-### Part 2: Building our API backend
+### Part 2: Setting up our Backend
 
 #### Structure
 Just like we created a `client` folder in Part #1, we'll create a `server` directory now.  In our top-level directory:

@@ -1,6 +1,6 @@
 ## Build a new React / Node.js application
 
-### Part 3: A realistic application
+### Part 3: Setting up our Backend... continued
 
 > NOTE: You'll need to be running Node version >= 8.0 for the following.  So if you don't have that one installed, do so.  Check out the [nvm](https://github.com/creationix/nvm) package if you'd like some assistance.
 
