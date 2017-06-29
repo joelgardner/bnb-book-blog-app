@@ -189,64 +189,181 @@ It's good to include Kevin.  If you run the above GraphQL *query* (as opposed to
 
 I used quotes around the word *database* because as I'm sure you've noticed, we're simply using an in-memory array to store our users.  Let's change that.
 
-#### Enter Postgres
+#### Enter Mongo
+If you haven't already, [install Mongo](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/).  
 
-To create our, make sure we have [Postgres installed](https://www.postgresql.org/download/).
+Done?  Created your `/data/db` directory?  Run the `mongod` command to make sure everything's set.  *CTRL-C* out of it and let's add that to our top-level `package.json`'s `start` command:
 
-> There are myriad posts/articles describing how to get Postgres up and running, so I won't go into that here.  Use your Google-fu and come back when you can run SQL commands.  Go ahead, we'll wait.
+`"start": "./node_modules/.bin/concurrently \"cd client && npm start\" \"cd server && npm run watch\" \"mongod\""`
 
-Now, create a database called `bnb-book`:
+> If you are using Mongo DB for more than 1 project, it probably makes less sense to do the previous step, and instead, just maintain an extra (permanent) terminal window to run the Mongo server from.
 
-`create database "bnb-book"`
+Now when we run `npm start` in our base directory, we'll kick off 3 processes: the client and server apps, and Mongo.
 
-In our `server` folder, create a `scripts/database/migrations` directory:
+Let's now install the Node.js mongodb driver.  In `server/`:
 
-`mkdir -p scripts/database/migrations && cd scripts/database`
+`npm install mongodb --save`
 
-To maintain order among a sea of database changes, we'll use a db migrations management library (aptly called) [db-migrate](https://github.com/db-migrate/node-db-migrate).  In our server folder, run:
+Let's add a `storage` folder under `server`.  It will house the files we use for persistence to our Mongo instance:
 
-`npm i --save-dev db-migrate db-migrate-pg`
+`mkdir storage && touch storage/index.js`
 
-Then create a file `scripts/database/database.json` with content:
+To start, we'll use Mongo's basic C.R.U.D. operations: `insertMany`, `find`, `update`, and `deleteMany`.  They map nicely to the [mutations](http://graphql.org/learn/queries/#mutations) we'll create for our GraphQL schema.
 
-```json
-{
-  "dev": {
-    "driver": "pg",
-    "user": "postgres",
-    "password": "",
-    "host": "localhost",
-    "database": "bnb-book",
-    "schema": "public"
+In `storage/index.js`, we'll have the following:
+
+```js
+// @flow
+import { MongoClient } from 'mongodb'
+
+//** URL where Mongo server is listening
+const url = 'mongodb://localhost:27017/bnb-book'
+
+/**
+  Private variable that holds the connection to Database.
+*/
+let db
+
+/**
+  Async function connects to Mongo instance and creates connection pool.
+  @returns {Object|false} DB context object if connection succeeded, false if connection failed.
+*/
+export async function setupStorage() : Object|bool {
+  try {
+    db = await MongoClient.connect(url)
+    return db
+  }
+  catch(e : Error) {
+    console.log('Error establishing connection to Mongo:', e)
+    return false
+  }
+}
+
+
+/**
+  Method inserts objects into datastore.
+  @param {string} catalog - Name of the type (or table) to be inserted.
+  @param Object|Array<Object> - Item or array of items to be inserted.
+    If a single item is passed, it will be wrapped in an array.
+  @return {Object|false} - Object describing the result of the operation, or false if the operation failed.
+*/
+export async function insert(catalog, items) : Object {
+  try {
+    return await db.collection(catalog).insertMany(Array.isArray(items) ? items : [items])
+  }
+  catch(e : Error) {
+    console.log(`Error inserting into Mongo catalog ${catalog}:`, e.stack)
+    return false
+  }
+}
+
+
+/**
+  Method retreives objects from datastore.
+  @param {string} catalog - Name of the type (or table) to be queried.
+  @param {Object} predicate - Object whose key-value pairs represent the where-clause.
+  @return {Array<mixed>} - Results of the query.
+*/
+export async function select(catalog, predicate) : Object {
+  try {
+    return await db.collection(catalog).find(predicate).toArray()
+  }
+  catch(e : Error) {
+    console.log(`Error querying catalog ${catalog}:`, e)
+    return e
+  }
+}
+
+
+/**
+  Method updates objects in datastore.
+  @param {string} catalog - Name of the type (or table) to be updated.
+  @param {Object} predicate - Object whose key-value pairs represent the where-clause.
+  @param {Object} updates - Object whose key-value pairs represent the updates.
+  @return {Array<mixed>} - Results of the query.
+*/
+export async function update(catalog, predicate, updates) : Object {
+  try {
+    return await db.collection(catalog).update(predicate, { $set: updates })
+  }
+  catch(e : Error) {
+    console.log(`Error updating in catalog ${catalog}:`, e)
+    return e
+  }
+}
+
+
+/**
+  Method deletes objects from datastore.
+  @param {string} catalog - Name of the type (or table) to be queried.
+  @param Object - Object whose key-value pairs represent the where-clause.
+  @return {Object} - Results of the deletion.
+*/
+export async function remove(catalog, predicate) : Object {
+  try {
+    return await db.collection(catalog).deleteMany(predicate)
+  }
+  catch(e : Error) {
+    console.log(`Error deleting from catalog ${catalog}:`, e)
+    return e
   }
 }
 ```
+> Note that we're defining a `const url` to hold our Mongo server's URL.  Eventually, we'll need to be more robust with this and use a proper configuration library.  But for now, this is fine.
 
-> NOTE: For credentials, my installation uses `postgres` as username, and the empty string as the password.  Your installation may be different, and if so, update those values in your file.
+Most methods are self explanatory.  `setupStorage` simply creates a connection to the Mongo server and returns the context if successful.  Catalogs are strings that reference the document type we're dealing with.  
 
-This points out dev database to our local Postgres instance.  Now, let's run the following command in `server` as a check.
+We're using `async`/`await` here so that we can use a simple `try/catch` to handle any errors that popup when interacting with Mongo.  For now we'll just log and return the `Error` object passed to the `catch`.
 
-`./node_modules/.bin/db-migrate up --config scripts/database/database.json --migrations-dir scripts/database/migrations/`
+Let's not forget our tests!  We'll write some simple tests in a new file, `__tests__/mongo-tests.js`:
 
-Hopefully you'll see:
+```js
+import { setupStorage, insert, select, remove, update } from '../src/storage'
 
+beforeAll(async () => {
+  let db = await setupStorage()
+})
+
+test('insert creates documents', async () => {
+  let { result } = await insert('testDocuments', [{ test: 1 }, { test: 2 }, { test: 3 }])
+  expect(result.ok).toBe(1)
+  expect(result.n).toBe(3)
+});
+
+test('update modifies documents', async () => {
+  let { result } = await update(
+    'testDocuments',  // catalog
+    { test: 1 },      // predicate: update documents with test=1
+    { test2: 2 }      // update:    set test2=2
+  )
+  expect(result.n).toBeGreaterThan(0)
+});
+
+test('select retrieves documents with empty filter', async () => {
+  let results = await select('testDocuments', {})
+  expect(results.length).toBeGreaterThan(0)
+});
+
+test('select retrieves documents with filter', async () => {
+  let results = await select('testDocuments', { test2: 2 })
+  expect(results.length).toBe(1)
+});
+
+test('remove deletes documents', async () => {
+  let { result } = await remove('testDocuments', {})
+  expect(result.n).toBeGreaterThan(0)
+});
 ```
-[INFO] No migrations to run
-[INFO] Done
+
+In addition to verifying that everything's running smoothly, these tests provide a way to see how our `storage` service will work.
+
+One more thing.  We need to have our main script call `setupStorage` when the app loads:  we'll just add these two lines after the `app.use(bodyParser.urlencoded({ extended: true }))` line in `src/index.js`:
+
+```js
+// mongo setup
+await setupStorage()
 ```
 
-This means we're ready to create our first migration file.  But first, let's make it easier on ourselves and put the above command into our `package.json`'s `scripts` property as:
+We just wait for the `setupStorage` function to finish, and discard the return value (we don't need it).
 
-`"migrate": "./node_modules/.bin/db-migrate up --config scripts/database/database.json --migrations-dir scripts/database/migrations/"`
-
-Then we'll only need to run `npm run migrate` to perform our DB migrations.
-
-Let's now create a couple migrations to build out our database schema:
-
-`./node_modules/.bin/db-migrate create --config scripts/database/database.json --migrations-dir`
-
-```sql
--- TODO
-```
-
-> For this application, we will -- against our better judgement -- use monotonic integers for IDs for our rows.  In a real application that cares about data security, we'd use uuids or something [like this](https://blog.andyet.com/2016/02/23/generating-shortids-in-postgres/).
+Now that our Mongo server is creating/reading/updating/deleting, we can start to build our queries and mutations.  

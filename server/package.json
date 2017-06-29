@@ -23,6 +23,7 @@
     "express": "^4.15.3",
     "graphql": "^0.10.1",
     "immutable": "^3.8.1",
+    "mongodb": "^2.2.29",
     "ramda": "^0.24.1"
   },
   "devDependencies": {

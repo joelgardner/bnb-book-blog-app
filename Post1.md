@@ -3,9 +3,9 @@
 ### Part 1: Basic technologies overview
 
 #### Backend
-As stated in the title of this post, we'll use [Node.js](https://nodejs.org) to run our backend code.  For our data store, we'll pick [Postgres](https://www.postgresql.org/).  And we'll serve our API via [GraphQL](http://graphql.org/) to interact with our frontend.  As an alternative to the traditional REST API, it relies not on URLs for accessing resources but customizable queries which allow us to extract only the data we want from our backend.
+As stated in the title of this post, we'll use [Node.js](https://nodejs.org) to run our backend code.  For our data store, we'll pick [Mongo](https://www.mongodb.com/).  And we'll serve our API via [GraphQL](http://graphql.org/) to interact with our frontend.  As an alternative to the traditional REST API, it relies not on URLs for accessing resources but customizable queries which allow us to extract only the data we want from our backend.
 
->*While we could have chosen a NoSQL data-store like [Mongo](https://www.mongodb.com/) for our data store, I'm a fan of a strictly defined and adhered-to schema.  In the event we need to utilize some NoSQL style functionality, Postgres' `jsonb` type is up to the task.*
+>*While we could have chosen a relational data-store like [Postgres](https://www.postgresql.org/) for our database, we'll stick with Mongo as it's very javascript friendly and has virtually nil set-up time.*
 
 #### Frontend
 Let's use [React](https://facebook.github.io/react/) and [Redux](http://redux.js.org/), as the pair provides a simple way to reason about the data-flow and state inside our app.  

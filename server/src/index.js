@@ -6,13 +6,18 @@ import { graphql, buildSchema } from 'graphql'
 import fs from 'fs'
 import { promisify } from 'util'
 import * as Root from './gateway/resolvers'
+import { setupStorage } from './storage'
 
 init()
 
 async function init() {
+  // express setup
   const app = express()
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
+
+  // mongo setup
+  await setupStorage()
 
   // read in the schema.graphql file, and build our schema with it
   const readFile : (string, string) => Promise<string> = promisify(fs.readFile)
