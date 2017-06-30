@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/services/gateway/index.js",
   "scripts": {
     "test": "./node_modules/.bin/jest",
     "babel": "./node_modules/.bin/babel src --out-dir out",
@@ -10,7 +10,7 @@
     "check": "npm run lint && npm run flow",
     "lint": "./node_modules/.bin/eslint src/*.js || true",
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
-    "babel-node": "./node_modules/.bin/babel-node src/index.js",
+    "babel-node": "./node_modules/.bin/babel-node src/services/gateway/index.js",
     "watch": "nodemon --exec \"npm run babel-node\"",
     "db-migrate-up": "./node_modules/.bin/db-migrate up --config scripts/database/database.json --migrations-dir scripts/database/migrations/",
     "db-migrate-down": "./node_modules/.bin/db-migrate down --config scripts/database/database.json --migrations-dir scripts/database/migrations/",
