@@ -6,40 +6,35 @@ class App extends Component {
   constructor() {
     super()
     this.state = {
-      a: 0,
-      b: 0,
-      sum: null,
-      error: null
+      email: '',
+      id: null
     }
   }
 
   render() {
     return (
       <div className="App">
+        <div>Create user:</div>
         <div>
-          <span>A</span>
-          <input type="number" defaultValue={this.state.a} onChange={e => this.setState({ a: e.target.value })} />
+          <span>Email</span>
+          <input type="text" defaultValue={this.state.email} onChange={e => this.setState({ email: e.target.value })} />
         </div>
         <div>
-          <span>B</span>
-          <input type="number" defaultValue={this.state.b} onChange={e => this.setState({ b: e.target.value })} />
+          <button onClick={() => this.handleClick(this.state.email)}>Create User</button>
         </div>
-        <div>
-          <button onClick={() => this.handleClick(this.state.a, this.state.b)}>Calculate!</button>
-        </div>
-        <span>{this.state.sum === null ? '' : `The sum is ${this.state.sum}`}</span>
+        <span>{this.state.id === null ? '' : `The user's ID is ${this.state.id}`}</span>
         <span style={{ color:'#f00' }}>{this.state.error}</span>
       </div>
     )
   }
 
-  async handleClick(a, b) {
-    try {
-      const result = await api.sum(a, b)
-      this.setState({ sum: result, error: null })
+  async handleClick(email) {
+    const result = await api.createUser(email)
+    if (result.errors) {
+      this.setState({ error: result.errors[0].message, id: null })
     }
-    catch (e) {
-      this.setState({ error: e.toString(), sum: null })
+    else {
+      this.setState({ email: result.data.createUser.email, id: result.data.createUser.id, error: null })
     }
   }
 }
