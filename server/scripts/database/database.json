@@ -1,11 +1,8 @@
 {
   "dev": {
-    "driver": "pg",
-    "user": "postgres",
-    "password": "",
-    "host": "localhost",
+    "driver": "mongodb",
     "database": "bnb-book",
-    "schema": "public"
-  },
-  "sql-file": true
+    "host": "localhost",
+    "port": "27017"
+  }
 }

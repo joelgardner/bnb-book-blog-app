@@ -12,8 +12,11 @@
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
     "babel-node": "./node_modules/.bin/babel-node src/index.js",
     "watch": "nodemon --exec \"npm run babel-node\"",
-    "migrate": "./node_modules/.bin/db-migrate up --config scripts/database/database.json --migrations-dir scripts/database/migrations/",
-    "create-migration": ""
+    "db-migrate-up": "./node_modules/.bin/db-migrate up --config scripts/database/database.json --migrations-dir scripts/database/migrations/",
+    "db-migrate-down": "./node_modules/.bin/db-migrate down --config scripts/database/database.json --migrations-dir scripts/database/migrations/",
+    "db-migrate-dropdb": "read -p \"*** Are you sure? Entering 'yes' or 'Y' will remove bnb-book DB from your local Mongo instance.\n> \" choice && case \"$choice\" in yes|Y ) ./node_modules/.bin/db-migrate db:drop bnb-book --config scripts/database/database.json;; * ) echo \"Nothing to do.\";; esac",
+    "db-migrate-createdb": "./node_modules/.bin/db-migrate db:create bnb-book --config scripts/database/database.json",
+    "db-migrate-create": "./node_modules/.bin/db-migrate create --config scripts/database/database.json --migrations-dir scripts/database/migrations/"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +36,7 @@
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-env": "^1.5.2",
     "db-migrate": "^0.10.0-beta.20",
+    "db-migrate-mongodb": "^1.2.2",
     "db-migrate-pg": "^0.1.11",
     "eslint": "^4.0.0",
     "eslint-plugin-babel": "^4.1.1",
