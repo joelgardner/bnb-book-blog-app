@@ -1,7 +1,11 @@
 import { connectToStorage, insertOne, fetchOne, deleteOne, updateOne } from '../src/services/storage'
 
 beforeAll(async () => {
-  let db = await connectToStorage()
+  (await connectToStorage())
+  .map(() => {
+    //console.log("Connected to Mongo")
+  })
+  .orElse(e => process.exit(e))
 })
 
 test('insertOne creates a document, deleteOne deletes it', async () => {

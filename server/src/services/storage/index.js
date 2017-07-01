@@ -20,7 +20,8 @@ let db
 */
 export async function connectToStorage() {
   return _try(async () => {
-    return await MongoClient.connect(url)
+    db = await MongoClient.connect(url)
+    return db
   })
 }
 
@@ -32,7 +33,7 @@ export async function connectToStorage() {
   @param Object - Item or array of items to be inserted.
   @return {Folktale.Result} - Object wrapping inserted item on success, or error on failure.
 */
-export async function insertOne(db : MongoDBConnection, collection : string, item : Object) {
+export async function insertOne(collection : string, item : Object) {
   return _try(async () => {
     const itemWithId = R.assoc('id', shortid.generate(), item)
     const result = await db.collection(collection).insert(itemWithId)
@@ -47,7 +48,7 @@ export async function insertOne(db : MongoDBConnection, collection : string, ite
   @param {string} id - Id of object to be fetched.
   @return {Folktaile.Result} - Object wrapping fetched item on success, or error on failure.
 */
-export async function fetchOne(db : MongoDBConnection, collection : string, id : string) : Object {
+export async function fetchOne(collection : string, id : string) : Object {
   return _try(async () => {
     return await db.collection(collection).findOne({ id })
   })
@@ -61,7 +62,7 @@ export async function fetchOne(db : MongoDBConnection, collection : string, id :
   @param {Object} updates - An object containing keys/values representing the update.
   @return {Folktale.Result} - Object wrapping updated item on success, or error on failure.
 */
-export async function updateOne(db : MongoDBConnection, collection : string, id : string, input : Object) : Object {
+export async function updateOne(collection : string, id : string, input : Object) : Object {
   return _try(async () => {
     let result = await db.collection(collection).findOneAndUpdate({ id }, { $set: input }, { returnOriginal: false })
     return result.value
@@ -75,7 +76,7 @@ export async function updateOne(db : MongoDBConnection, collection : string, id 
   @param {string} id - Id of object to be removed.
   @return {Folktale.Result} - Object wrapping deleted item on success, or error on failure.
 */
-export async function deleteOne(db : MongoDBConnection, collection : string, id : String) : Object {
+export async function deleteOne(collection : string, id : String) : Object {
   return _try(async () => {
     let result = await db.collection(collection).findOneAndDelete({ id })
     return result.value

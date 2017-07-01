@@ -1,7 +1,9 @@
+// @flow
 import seneca from 'seneca'
 import { connectToStorage } from '.'
 import { iife } from '../../util'
-import storagePatterns from './storage-patterns'
+import storage from './storage'
+import type { MongoDBConnection } from '../../types/mongo'
 
 /**
   Use an IIFE to initialize a connection to the Mongo store.
@@ -16,7 +18,7 @@ iife(async () => {
   // success
   connection.map(db => {
     seneca()
-      .use(storagePatterns(db))
+      .use(storage)
       .listen()
   })
 
