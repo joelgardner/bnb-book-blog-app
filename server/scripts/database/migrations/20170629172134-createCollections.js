@@ -26,6 +26,7 @@ exports.up = function(db) {
   ])
   // create unique indices
   .then(() => Promise.all([
+    db.addIndex('User', 'idx_User_id', ['id'], true),
     db.addIndex('User', 'idx_User_email', ['email'], true),
     db.addIndex('LocalAuth', 'idx_LocalAuth_username', ['username'], true)
   ]))

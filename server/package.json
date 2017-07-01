@@ -24,17 +24,20 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
+    "folktale": "^2.0.0-rc1",
     "graphql": "^0.10.1",
     "immutable": "^3.8.1",
     "mongodb": "^2.2.29",
     "ramda": "^0.24.1",
-    "seneca": "^3.3.0"
+    "seneca": "^3.3.0",
+    "shortid": "^2.2.8"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.5.2",
     "db-migrate": "^0.10.0-beta.20",
     "db-migrate-mongodb": "^1.2.2",

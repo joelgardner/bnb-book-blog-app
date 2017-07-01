@@ -1,13 +1,12 @@
-import { setupStorage, insert, select, remove, update } from '../src/storage'
+import { setupStorage, insert, select, remove, update } from '../src/services/storage'
 
 beforeAll(async () => {
   let db = await setupStorage()
 })
 
 test('insert creates documents', async () => {
-  let { result } = await insert('testDocuments', [{ test: 1 }, { test: 2 }, { test: 3 }])
-  expect(result.ok).toBe(1)
-  expect(result.n).toBe(3)
+  let result = await insert('testDocuments', { test: 1 })
+  expect(result).toHaveProperty('test', 1)
 });
 
 test('update modifies documents', async () => {

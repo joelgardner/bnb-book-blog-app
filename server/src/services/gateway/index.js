@@ -5,11 +5,10 @@ import bodyParser from 'body-parser'
 import { graphql, buildSchema } from 'graphql'
 import fs from 'fs'
 import { promisify } from 'util'
-import * as Root from './resolvers'
+import Root from './resolvers'
+import { iife } from '../../util'
 
-init()
-
-async function init() {
+iife(async () => {
   // express setup
   const app = express()
   app.use(bodyParser.json())
@@ -30,4 +29,4 @@ async function init() {
     console.log('Listening on port 3001.')
     /* eslint-enable no-console */
   })
-}
+})

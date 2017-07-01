@@ -37,7 +37,7 @@ type File {
 }
 
 type Query {
-  getUser(id: ID!) : User
+  getUser(id:ID email:String) : User
 }
 
 type Mutation {
