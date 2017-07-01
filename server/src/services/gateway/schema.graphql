@@ -1,6 +1,14 @@
 type User {
   id: ID!
   email: String!
+  firstName: String
+  lastName: String
+}
+
+input UserInput {
+  email: String
+  firstName: String
+  lastName: String
 }
 
 type LocalAuth {
@@ -37,9 +45,11 @@ type File {
 }
 
 type Query {
-  getUser(id:ID email:String) : User
+  fetchUser(id: ID!) : User
 }
 
 type Mutation {
-  createUser(email: String!) : User
+  createUser(input : UserInput) : User
+  updateUser(id : ID!, input : UserInput) : User
+  deleteUser(id: ID!) : User
 }

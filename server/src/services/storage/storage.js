@@ -33,7 +33,7 @@ export async function setupStorage() : Object {
   Method inserts objects into datastore.
   @param {string} collection - Name of the type (or table) to be inserted.
   @param Object - Item or array of items to be inserted.
-  @return {Either<Error, Object>} - The inserted object -- with new id -- or null if the operation failed.
+  @return {Folktale.Result} - Object wrapping inserted item on success, or error on failure.
 */
 export async function insertOne(collection : string, item : Object) : any {
   return _try(async () => {
@@ -47,12 +47,12 @@ export async function insertOne(collection : string, item : Object) : any {
 /**
   Method retreives objects from datastore.
   @param {string} collection - Name of the type (or table) to be queried.
-  @param {Object} predicate - Object whose key-value pairs represent the where-clause.
-  @return {Array<mixed>} - Results of the query.
+  @param {string} id - Id of object to be fetched.
+  @return {Folktaile.Result} - Object wrapping fetched item on success, or error on failure.
 */
-export async function fetchOne(collection : string, predicate : Object) : Object {
+export async function fetchOne(collection : string, id : string) : Object {
   return _try(async () => {
-    return await db.collection(collection).findOne(predicate)
+    return await db.collection(collection).findOne({ id })
   })
 }
 
@@ -60,58 +60,27 @@ export async function fetchOne(collection : string, predicate : Object) : Object
 /**
   Method updates objects in datastore.
   @param {string} collection - Name of the type (or table) to be updated.
-  @param {Object} predicate - Object whose key-value pairs represent the where-clause.
-  @param {Object} updates - Object whose key-value pairs represent the updates.
-  @return {Array<mixed>} - Results of the query.
+  @param {Object} id - Id of object to be updated.
+  @param {Object} updates - An object containing keys/values representing the update.
+  @return {Folktale.Result} - Object wrapping updated item on success, or error on failure.
 */
-export async function update(collection : string, predicate : Object, updates : Object) : Object {
-  try {
-    return await db.collection(collection).update(predicate, { $set: updates })
-  }
-  catch(e) {
-    console.log(`Error updating in collection ${collection}:`, e)
-    return e
-  }
+export async function updateOne(collection : string, id : string, input : Object) : Object {
+  return _try(async () => {
+    let result = await db.collection(collection).findOneAndUpdate({ id }, { $set: input }, { returnOriginal: false })
+    return result.value
+  })
 }
 
 
 /**
   Method deletes objects from datastore.
-  @param {string} collection - Name of the type (or table) to be queried.
-  @param Object - Object whose key-value pairs represent the where-clause.
-  @return {Object} - Results of the deletion.
+  @param {string} collection - Name of the type (or table) to be removed.
+  @param {string} id - Id of object to be removed.
+  @return {Folktale.Result} - Object wrapping deleted item on success, or error on failure.
 */
-export async function remove(collection : string, predicate : Object) : Object {
-  try {
-    return await db.collection(collection).deleteMany(predicate)
-  }
-  catch(e) {
-    console.log(`Error deleting from collection ${collection}:`, e)
-    return e
-  }
-}
-
-/**
-  if predicate has "id" property, we must copy the string value
-  (a) set predicate._id to new ObjectID(predicate.id)
-  (b) remove "id"
-  TODO: add "id" as a real column, and do not deal
-  with "_id" which is internal to Mongo
-*/
-const formatIdForMongo = predicate => {
-  if (!R.has('id', predicate)) return predicate
-  const result = Object.assign({}, predicate, { _id: new ObjectID(predicate.id) })
-  delete result.id
-  return result
-  // R.ifElse(
-  //   R.has('id'),
-  //   R.pipe(
-  //     R.over(
-  //       R.lens(R.prop('id'), R.assoc('_id')),
-  //       R.construct(ObjectID)
-  //     ),
-  //     R.dissoc('id')
-  //   ),
-  //   R.identity
-  // )(predicate)
+export async function deleteOne(collection : string, id : String) : Object {
+  return _try(async () => {
+    let result = await db.collection(collection).findOneAndDelete({ id })
+    return result.value
+  })
 }
