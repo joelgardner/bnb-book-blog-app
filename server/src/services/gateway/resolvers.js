@@ -62,7 +62,3 @@ const resolver = async pin =>
     Ok:     ({ value }) => value,
     Error:  ({ value }) => { throw new Error(value) }
   })
-
-export async function createUser(user, context) {
-  return Promise.resolve({ id: 2, name: 'Billy Jean' })
-}

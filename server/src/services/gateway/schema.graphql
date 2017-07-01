@@ -45,11 +45,11 @@ type File {
 }
 
 type Query {
-  fetchUser(id: ID!) : User
+  fetchUser(id: ID!): User
 }
 
 type Mutation {
-  createUser(input : UserInput) : User
-  updateUser(id : ID!, input : UserInput) : User
-  deleteUser(id: ID!) : User
+  createUser(input: UserInput): User
+  updateUser(id: ID!, input: UserInput): User
+  deleteUser(id: ID!): User
 }

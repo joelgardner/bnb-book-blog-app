@@ -1,98 +1,83 @@
 // @flow
-import { MongoClient, ObjectID } from 'mongodb'
+import { MongoClient } from 'mongodb'
+import R from 'ramda'
+import { _try } from '../../util'
+import shortid from 'shortid'
+import type { MongoDBConnection } from '../../types/mongo'
 
 //** URL where Mongo server is listening
 const url = 'mongodb://localhost:27017/bnb-book'
 
 /**
-  Private variable that holds the connection to Database.
+  Variable that holds the connection to Database.
 */
 let db
 
 /**
   Async function connects to Mongo instance and creates connection pool.
-  @returns {Object} DB context object if connection succeeded, logs & throws exception if connection failed.
+  @returns {Folktale.Result}  - Object wrapping DB context object on connection,
+    exception if connection failed.
 */
-export async function setupStorage() : Object {
-  try {
-    db = await MongoClient.connect(url)
-    return db
-  }
-  catch(e) {
-    console.log('Error establishing connection to Mongo:', e)
-    throw e
-  }
+export async function connectToStorage() {
+  return _try(async () => {
+    return await MongoClient.connect(url)
+  })
 }
 
 
 /**
   Method inserts objects into datastore.
-  @param {string} collection - Name of the type (or table) to be inserted.
+  @param {string} collection - Name of the type (or table) to be inserted.  An id
+    is generated via the shortid library, so as not to rely on mongo's _id property.
   @param Object - Item or array of items to be inserted.
-  @return {Either<Error, Object>} - The inserted object -- with new id -- or null if the operation failed.
+  @return {Folktale.Result} - Object wrapping inserted item on success, or error on failure.
 */
-export async function insert(collection : string, item : Object) : any {
-  try {
-    const result = await db.collection(collection).insert(item)
-    return Object.assign(item, { id: result.insertedIds[0] })
-  }
-  catch(e) {
-    console.log(`Error inserting into Mongo collection ${collection}:`, e.stack)
-    throw e
-  }
+export async function insertOne(db : MongoDBConnection, collection : string, item : Object) {
+  return _try(async () => {
+    const itemWithId = R.assoc('id', shortid.generate(), item)
+    const result = await db.collection(collection).insert(itemWithId)
+    return result.ops[0]
+  })
 }
 
 
 /**
   Method retreives objects from datastore.
   @param {string} collection - Name of the type (or table) to be queried.
-  @param {Object} predicate - Object whose key-value pairs represent the where-clause.
-  @return {Array<mixed>} - Results of the query.
+  @param {string} id - Id of object to be fetched.
+  @return {Folktaile.Result} - Object wrapping fetched item on success, or error on failure.
 */
-export async function select(collection : string, predicate : Object) : Object {
-  try {
-    if (predicate._id) {
-      predicate._id = new ObjectID(predicate._id)
-    }
-    return await db.collection(collection).find(predicate).toArray()
-  }
-  catch(e) {
-    console.log(`Error querying collection ${collection}:`, e)
-    return e
-  }
+export async function fetchOne(db : MongoDBConnection, collection : string, id : string) : Object {
+  return _try(async () => {
+    return await db.collection(collection).findOne({ id })
+  })
 }
 
 
 /**
   Method updates objects in datastore.
   @param {string} collection - Name of the type (or table) to be updated.
-  @param {Object} predicate - Object whose key-value pairs represent the where-clause.
-  @param {Object} updates - Object whose key-value pairs represent the updates.
-  @return {Array<mixed>} - Results of the query.
+  @param {Object} id - Id of object to be updated.
+  @param {Object} updates - An object containing keys/values representing the update.
+  @return {Folktale.Result} - Object wrapping updated item on success, or error on failure.
 */
-export async function update(collection : string, predicate : Object, updates : Object) : Object {
-  try {
-    return await db.collection(collection).update(predicate, { $set: updates })
-  }
-  catch(e) {
-    console.log(`Error updating in collection ${collection}:`, e)
-    return e
-  }
+export async function updateOne(db : MongoDBConnection, collection : string, id : string, input : Object) : Object {
+  return _try(async () => {
+    let result = await db.collection(collection).findOneAndUpdate({ id }, { $set: input }, { returnOriginal: false })
+    return result.value
+  })
 }
 
 
 /**
   Method deletes objects from datastore.
-  @param {string} collection - Name of the type (or table) to be queried.
-  @param Object - Object whose key-value pairs represent the where-clause.
-  @return {Object} - Results of the deletion.
+  @param {string} collection - Name of the type (or table) to be removed.
+  @param {string} id - Id of object to be removed.
+  @return {Folktale.Result} - Object wrapping deleted item on success, or error on failure.
 */
-export async function remove(collection : string, predicate : Object) : Object {
-  try {
-    return await db.collection(collection).deleteMany(predicate)
-  }
-  catch(e) {
-    console.log(`Error deleting from collection ${collection}:`, e)
-    return e
-  }
+export async function deleteOne(db : MongoDBConnection, collection : string, id : String) : Object {
+  return _try(async () => {
+    let result = await db.collection(collection).findOneAndDelete({ id })
+    return result.value
+  })
 }

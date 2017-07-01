@@ -1,35 +1,27 @@
 import seneca from 'seneca'
-import { setupStorage, fetchOne, insertOne, updateOne, deleteOne } from './storage'
-import Result from 'folktale/result'
+import { connectToStorage } from '.'
 import { iife } from '../../util'
+import storagePatterns from './storage-patterns'
 
+/**
+  Use an IIFE to initialize a connection to the Mongo store.
+  - If successful, start a Seneca microservice listening for patterns defined
+      storage-patterns.js.
+  - If unsuccessful, end the process, logging the exception.
+*/
 iife(async () => {
-  await setupStorage()
+  // connect to Mongo instance
+  const connection = await connectToStorage()
 
-  seneca()
-    .use(storageService)
-    .listen()
+  // success
+  connection.map(db => {
+    seneca()
+      .use(storagePatterns(db))
+      .listen()
+  })
+
+  // failure
+  .orElse(e => {
+    console.log('Connection to Mongo instance failed:', e)
+  })
 })
-
-function storageService(options) {
-  this
-  .add({ role: 'storage', cmd: 'fetchOne' }, async (msg, reply) => {
-    const result = await fetchOne(msg.type, msg.id)
-    reply(null, result.toJSON())
-  })
-
-  .add({ role: 'storage', cmd: 'insertOne' }, async (msg, reply) => {
-    const result = await insertOne(msg.type, msg.input)
-    reply(null, result.toJSON())
-  })
-
-  .add({ role: 'storage', cmd: 'updateOne' }, async (msg, reply) => {
-    const result = await updateOne(msg.type, msg.id, msg.input)
-    reply(null, result.toJSON())
-  })
-
-  .add({ role: 'storage', cmd: 'deleteOne' }, async (msg, reply) => {
-    const result = await deleteOne(msg.type, msg.id, msg.input)
-    reply(null, result.toJSON())
-  })
-}

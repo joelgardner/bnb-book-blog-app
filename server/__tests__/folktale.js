@@ -2,7 +2,6 @@ import Result from 'folktale/result'
 
 test('matchWith Error', () => {
   let r = fail('i failed you :(')
-  console.log(JSON.stringify(r))
   expect(
     r.matchWith({
       Ok:     ({ value }) => "i love " + value,
@@ -13,7 +12,6 @@ test('matchWith Error', () => {
 
 test('matchWith Ok', () => {
   let r = succeed('yayyy')
-  console.log(JSON.stringify(r))
   expect(
     r.matchWith({
       Ok:     ({ value }) => "omg " + value,
