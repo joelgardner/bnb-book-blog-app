@@ -10,6 +10,7 @@ export default function storage(options) {
   this
   .add({ role: ROLE_NAME, cmd: 'fetchOne' }, async (msg, reply) => {
     const result = await fetchOne(msg.type, msg.id)
+    console.log("RESULT", result)
     reply(null, result.toJSON())
   })
 

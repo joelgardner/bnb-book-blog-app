@@ -64,7 +64,11 @@ export async function fetchOne(collection : string, id : string) : Object {
 */
 export async function updateOne(collection : string, id : string, input : Object) : Object {
   return _try(async () => {
-    let result = await db.collection(collection).findOneAndUpdate({ id }, { $set: input }, { returnOriginal: false })
+    let result = await db.collection(collection).findOneAndUpdate(
+      { id },
+      { $set: input },
+      { returnOriginal: false }
+    )
     return result.value
   })
 }

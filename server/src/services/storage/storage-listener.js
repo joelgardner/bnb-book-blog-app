@@ -2,7 +2,7 @@
 import seneca from 'seneca'
 import { connectToStorage } from '.'
 import { iife } from '../../util'
-import storage from './storage'
+import storage from './storage-patterns'
 import type { MongoDBConnection } from '../../types/mongo'
 
 /**
