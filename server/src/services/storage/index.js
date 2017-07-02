@@ -25,6 +25,16 @@ export async function connectToStorage() {
   })
 }
 
+/**
+  Async function disconnects from Mongo instance.
+*/
+export async function disconnectFromStorage() {
+  return _try(async () => {
+    await db.close()
+    db = null
+  })
+}
+
 
 /**
   Method inserts objects into datastore.
