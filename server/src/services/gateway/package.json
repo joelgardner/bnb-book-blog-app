@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bnb-book-util": "file:../../bnb-book-util",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "folktale": "^2.0.0-rc1",
