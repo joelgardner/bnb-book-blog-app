@@ -1,7 +1,7 @@
 // @flow
 import { MongoClient } from 'mongodb'
 import R from 'ramda'
-import { _try } from '../../util'
+import { _try } from 'bnb-book-util'
 import shortid from 'shortid'
 import type { MongoDBConnection } from '../../types/mongo'
 

@@ -1,0 +1,19 @@
+{
+  "name": "storage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bnb-book-util": "file:../../bnb-book-util",
+    "folktale": "^2.0.0-rc1",
+    "mongodb": "^2.2.29",
+    "ramda": "^0.24.1",
+    "seneca": "^3.3.0",
+    "shortid": "^2.2.8"
+  }
+}

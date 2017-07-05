@@ -13,7 +13,7 @@ beforeAll(async () => {
   })
 })
 
-afterAll(async() => {
+afterAll(async () => {
   await disconnectFromStorage()
 })
 
