@@ -1,0 +1,18 @@
+{
+  "name": "gateway",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "folktale": "^2.0.0-rc1",
+    "graphql": "^0.10.3",
+    "seneca": "^3.4.0"
+  }
+}
