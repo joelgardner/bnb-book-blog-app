@@ -1,9 +1,15 @@
-#### Guide to building a React/Redux app
+#### React/Redux frontend using GraphQL to interact with a Node/Mongo backend
 
-The post is not currently done, but is divided into 3 parts (so far).
+#### Start the app
+- Run `mongod` to start the MongoDB server instance
+- In the base directory, run `npm start`, which in turn:
+  - Runs `npm start` in `client`
+  - Runs `npm run watch` in `server`
 
-- Part 1: [Basic Technologies Overview](https://github.com/joelgardner/react-node-app/blob/master/Post1.md)
-- Part 2: [Setting up our Backend](https://github.com/joelgardner/react-node-app/blob/master/Post2.md)
-- Part 3: [Setting up our Backend... continued](https://github.com/joelgardner/react-node-app/blob/master/Post3.md)
 
-There will probably be 5 or 6 parts, when all is said and done.
+#### Testing
+- Run `npm t` in either `client` or `server`
+
+#### Building the app
+- Frontend: In `client`, running `npm run build` will output static files into `client/out`
+- Backend: In `server`, running `./scripts/build-service.sh gateway|storage` will build the passed in service (e.g., `gateway` or `storage` in `build`.  Simply copy the output directory and run `npm install && npm start`)
