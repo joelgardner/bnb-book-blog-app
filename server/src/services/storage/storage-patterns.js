@@ -10,21 +10,21 @@ export default function storage(options) {
   this
   .add({ role: ROLE_NAME, cmd: 'fetchOne' }, async (msg, reply) => {
     const result = await fetchOne(msg.type, msg.id)
-    reply(null, result.toJSON())
+    reply(result.toJSON())
   })
 
   .add({ role: ROLE_NAME, cmd: 'insertOne' }, async (msg, reply) => {
     const result = await insertOne(msg.type, msg.input)
-    reply(null, result.toJSON())
+    reply(result.toJSON())
   })
 
   .add({ role: ROLE_NAME, cmd: 'updateOne' }, async (msg, reply) => {
     const result = await updateOne(msg.type, msg.id, msg.input)
-    reply(null, result.toJSON())
+    reply(result.toJSON())
   })
 
   .add({ role: ROLE_NAME, cmd: 'deleteOne' }, async (msg, reply) => {
     const result = await deleteOne(msg.type, msg.id, msg.input)
-    reply(null, result.toJSON())
+    reply(result.toJSON())
   })
 }

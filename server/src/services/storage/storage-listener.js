@@ -1,4 +1,5 @@
 // @flow
+import "regenerator-runtime/runtime"
 import seneca from 'seneca'
 import { connectToStorage } from '.'
 import { iife } from '../../bnb-book-util'

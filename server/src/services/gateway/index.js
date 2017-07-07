@@ -1,12 +1,13 @@
 // @flow
 'use strict'
+import 'babel-polyfill'
 import express from 'express'
 import bodyParser from 'body-parser'
 import { graphql, buildSchema } from 'graphql'
 import fs from 'fs'
 import { promisify } from 'util'
 import Root from './resolvers'
-import { iife } from '../../util'
+import { iife } from 'bnb-book-util'
 
 iife(async () => {
   // express setup

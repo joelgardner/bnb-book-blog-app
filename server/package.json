@@ -21,17 +21,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.17.2",
-    "express": "^4.15.3",
-    "folktale": "^2.0.0-rc1",
-    "graphql": "^0.10.1",
-    "immutable": "^3.8.1",
-    "mongodb": "^2.2.29",
-    "ramda": "^0.24.1",
-    "seneca": "^3.3.0",
-    "shortid": "^2.2.8"
-  },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
@@ -48,6 +37,7 @@
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-react": "^7.1.0",
     "flow-bin": "^0.48.0",
-    "jest": "^20.0.4"
+    "jest": "^20.0.4",
+    "json": "^9.0.6"
   }
 }
