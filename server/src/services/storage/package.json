@@ -14,6 +14,7 @@
     "folktale": "^2.0.0-rc1",
     "mongodb": "^2.2.29",
     "ramda": "^0.24.1",
+    "regenerator-runtime": "^0.10.5",
     "seneca": "^3.3.0",
     "shortid": "^2.2.8"
   }

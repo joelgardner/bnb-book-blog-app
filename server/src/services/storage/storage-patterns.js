@@ -1,3 +1,5 @@
+// @flow
+'use strict'
 import { fetchOne, insertOne, updateOne, deleteOne } from '.'
 import type { MongoDBConnection } from '../../types/mongo'
 

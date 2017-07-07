@@ -10,13 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-polyfill": "^6.23.0",
     "bnb-book-util": "file:../../bnb-book-util",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "folktale": "^2.0.0-rc1",
     "graphql": "^0.10.3",
     "ramda": "^0.24.1",
+    "regenerator-runtime": "^0.10.5",
     "seneca": "^3.4.0"
   }
 }

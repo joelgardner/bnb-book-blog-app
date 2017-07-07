@@ -1,6 +1,6 @@
 // @flow
 'use strict'
-import 'babel-polyfill'
+import 'regenerator-runtime/runtime'
 import express from 'express'
 import bodyParser from 'body-parser'
 import { graphql, buildSchema } from 'graphql'
