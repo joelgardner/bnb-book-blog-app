@@ -17,6 +17,8 @@
     "graphql": "^0.10.3",
     "ramda": "^0.24.1",
     "regenerator-runtime": "^0.10.5",
-    "seneca": "^3.4.0"
+    "seneca": "^3.4.0",
+    "seneca-web": "^2.1.0",
+    "seneca-web-adapter-express": "^1.0.2"
   }
 }

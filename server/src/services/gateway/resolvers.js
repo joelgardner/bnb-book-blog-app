@@ -12,7 +12,7 @@ S.client({ port: 10101 })
 
 /**
   List of types (see schema.graphql).  Each one is used to generate:
-  - getX: a resolver that returns the first item matching the predicate.
+  - fetchX: a resolver that returns the first item matching the predicate.
   - createX: a resolver that creates an item in the database.
   - updateX: a resolver that updates the first item matching the predicate.
   - deleteX: a resolver that deletes the first item matching the predicate.
@@ -44,8 +44,8 @@ const generated = types.reduce((resolvers, type) => {
     resolver({ role: 'storage', cmd: 'updateOne', type, id, input })
 
   // delete
-  resolvers[`delete${type}`] = ({ id, input }, context) =>
-    resolver({ role: 'storage', cmd: 'deleteOne', type, id, input })
+  resolvers[`delete${type}`] = ({ id }, context) =>
+    resolver({ role: 'storage', cmd: 'deleteOne', type, id })
 
   return resolvers
 }, {})
