@@ -1,6 +1,6 @@
 // @flow
 'use strict'
-import { fetchOne, insertOne, updateOne, deleteOne } from '.'
+import { fetchOne, insertOne, updateOne, deleteOne } from './index'
 import type { MongoDBConnection } from '../../types/mongo'
 
 const ROLE_NAME = 'storage'

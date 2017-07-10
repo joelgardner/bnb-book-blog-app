@@ -7,7 +7,7 @@
     "test": "./node_modules/.bin/jest",
     "babel": "./node_modules/.bin/babel src --out-dir out",
     "build": "npm run check && rm -rf out/ && npm run babel",
-    "services": "find src/services/*/*-listener.js -exec echo \"\\\"./node_modules/.bin/babel-node {}\\\"\" \\; | xargs ../node_modules/.bin/concurrently || true",
+    "services": "find src/services/ -type d -maxdepth 1 -mindepth 1 -exec echo '\"cd {}; npm run watch;\"' \\; | xargs ../node_modules/.bin/concurrently || true",
     "check": "npm run lint && npm run flow",
     "lint": "./node_modules/.bin/eslint src/**/*.js || true",
     "flow": "flow; test $? -eq 0 -o $? -eq 2",

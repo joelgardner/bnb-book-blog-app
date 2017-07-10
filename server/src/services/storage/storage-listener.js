@@ -1,7 +1,7 @@
 // @flow
 import 'regenerator-runtime/runtime'
 import seneca from 'seneca'
-import { connectToStorage } from '.'
+import { connectToStorage } from './index'
 import { iife } from '../../bnb-book-util'
 import storage from './storage-patterns'
 import type { MongoDBConnection } from '../../types/mongo'

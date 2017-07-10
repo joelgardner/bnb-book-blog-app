@@ -1,10 +1,11 @@
 {
-  "name": "Seneca service that provides storage functionality.",
+  "name": "storage-service",
   "version": "1.0.0",
   "description": "",
   "main": "storage-listener.js",
   "scripts": {
-    "start": "node storage-listener.js",
+    "start": "node --require babel-register storage-listener.js",
+    "watch": "nodemon --exec \"npm start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
