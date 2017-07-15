@@ -27,7 +27,7 @@ rsync -r --exclude=node_modules src/services/$SERVICE build
 rsync -r --exclude=node_modules src/bnb-book-util build/$SERVICE
 
 # build babel-transformed javascript in out/
-./node_modules/.bin/babel build/$SERVICE --out-dir build/$SERVICE
+./node_modules/.bin/babel build/$SERVICE --out-dir build/$SERVICE --source-maps
 
 # update the package.json's dependencies.bnb-book-util path
 ./node_modules/.bin/json -I -f build/$SERVICE/package.json -e 'this.dependencies["bnb-book-util"]="file:./bnb-book-util"'

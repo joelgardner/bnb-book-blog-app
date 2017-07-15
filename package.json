@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/concurrently \"cd client && npm start\" \"cd server && npm run watch\""
+    "start": "./node_modules/.bin/concurrently \"cd client && npm start\" \"cd server && npm run services\""
   },
   "repository": {
     "type": "git",

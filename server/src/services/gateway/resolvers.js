@@ -50,7 +50,33 @@ const generated = types.reduce((resolvers, type) => {
   return resolvers
 }, {})
 
-export default generated
+const custom = {
+  createBooking: async (args, context) => {
+    return await Promise.resolve({
+      id: "asdf",
+      email: "asdf@asdf.com",
+      room: {
+        id: 123
+      },
+      start: new Date().getTime(),
+      end: new Date().getTime()
+    })
+  },
+  listProperties: async (args, context) => {
+    return await Promise.resolve([{
+      id: "asdf",
+      street1: "street1!",
+      street2: "street2!",
+      city: "derpville",
+      state: "tx"
+    }])
+  }
+}
+
+/*
+curl -X POST localhost:3000/graphql -H "content-type: application/json" -d '{ "query": "mutation CreateBooking($roomId: ID!, $email: String!, $start: Date!, $end: Date!) { createBooking(roomId: $roomId, email: $email, start: $start, end: $end) { id email start end room { id } } }", "args": { "roomId": "123", "email": "asdf@asdf.com", "start": "1499962535630", "end": "1499962537859" } }'
+*/
+export default R.merge(generated, custom)
 
 /**
   Builds an async resolver.

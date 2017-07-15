@@ -1,3 +1,5 @@
+scalar Date
+
 type User {
   id: ID!
   email: String!
@@ -20,15 +22,20 @@ type LocalAuth {
 type Property {
   id: ID!
   owner: User!
-  address: Address
   rooms: [Room]
-}
-
-type Address {
   street1: String!
   street2: String
   city: String!
   state: String!
+}
+
+input PropertyInput {
+  owner: UserInput
+  rooms: [RoomInput]
+  street1: String
+  street2: String
+  city: String
+  state: String
 }
 
 type Room {
@@ -39,17 +46,47 @@ type Room {
   image: File
 }
 
+input RoomInput {
+  name: String
+  price: Float
+  description: String
+  image: FileInput
+}
+
 type File {
   id: ID!
   url: String!
 }
 
+input FileInput {
+  url: String
+}
+
+type Booking {
+  id: ID!
+  room: Room!
+  email: String!
+  start: Date!
+  end: Date!
+}
+
+input SearchParameters {
+  searchText: String
+  sortAsc: Boolean
+  sortKey: String
+  first: Int
+  skip: Int
+}
+
 type Query {
   fetchUser(id: ID!): User
+  listProperties(args: PropertyInput, search: SearchParameters) : [Property]
+  listRooms(args: RoomInput, search: SearchParameters) : [Room]
 }
 
 type Mutation {
   createUser(input: UserInput): User
   updateUser(id: ID!, input: UserInput): User
   deleteUser(id: ID!): User
+  createBooking(roomId: ID!, email: String!, start: Date!, end: Date!): Booking
 }

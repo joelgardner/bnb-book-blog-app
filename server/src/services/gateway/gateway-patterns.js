@@ -9,7 +9,7 @@ import Root from './resolvers'
 */
 export default async function gateway(options) {
 
-  this.add({ role: 'gateway', path: 'graphql' }, async (msg, reply) => {
+  this.add('role:gateway, path:graphql', async (msg, reply) => {
     const { query, args } = msg.args.body
     const result : Object = await graphql(schema, query, Root, { user: 'Bill' }, args)
     reply(result)

@@ -10,6 +10,22 @@ export function createUser(email) {
   )
 }
 
+export function listProperties(args, searchParameters) {
+  return graphql(
+    `query ListProperties($args: PropertyInput, $searchParameters: SearchParameters) {
+      listProperties(args: $args, searchParameters: $searchParameters) {
+        id
+        name
+        street1
+        street2
+        city
+        state
+      }
+    }`,
+    { args, searchParameters }
+  )
+}
+
 function graphql(query, args) {
   return send(`/graphql`, {
     method: 'POST',
