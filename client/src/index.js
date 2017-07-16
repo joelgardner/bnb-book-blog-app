@@ -2,57 +2,87 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './components/App/App'
 import registerServiceWorker from './registerServiceWorker'
-import ApolloClient, { createNetworkInterface } from 'apollo-client'
-import { ApolloProvider } from 'react-apollo'
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
-//import { Provider } from 'react-redux'
+import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
 import reducer from './reducers'
 import sagas from './sagas'
 import './index.css'
+import { apolloClient } from './api'
+import { routerForBrowser, initializeCurrentLocation } from 'redux-little-router';
 
+// define our routes
+const routes = {
+  '/': {
+    title: 'Properties'
+  },
+  '/property/:id' : {
+    title: 'Property Details'
+  },
+  '/room/:id': {
+    title: 'Room details'
+  },
+  '/manage': {
+    title: 'Manage Properties',
+    '/:id': {
+      title: 'Manage Property'
+    },
+    '/room/:id': {
+      title: 'Manage Room'
+    }
+  }
+}
 
-const client = new ApolloClient({
-  networkInterface: createNetworkInterface({ uri: 'http://localhost:3000/graphql' }),
-})
+// initialize our router
+const {
+  reducer     : routerReducer,
+  middleware  : routerMiddleware,
+  enhancer    : routerEnhancer
+} = routerForBrowser({ routes })
+
+// build our store
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(
   combineReducers({
-    ...reducer,
-    apollo: client.reducer(),
+    app     : reducer,
+    router  : routerReducer,
+    apollo  : apolloClient.reducer()
   }),
   {}, // initial state
   compose(
-      applyMiddleware(client.middleware()),
-      //applyMiddleware(sagaMiddleware),
-      // If you are using the devToolsExtension, you can add it here also
-      //(typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
+    routerEnhancer,
+    applyMiddleware(sagaMiddleware, routerMiddleware, apolloClient.middleware()),
+    (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
   )
 );
 
-//sagaMiddleware.run(sagas)
+// kick off sagas
+sagaMiddleware.run(sagas)
 
-
+// render app
 ReactDOM.render(
-  //<Provider store={store}>
-  <ApolloProvider store={store} client={client}>
+  <Provider store={store}>
     <App />
-  </ApolloProvider>,
-  //</Provider>,
+  </Provider>,
   document.getElementById('root')
 )
 registerServiceWorker()
 
+// hot-reloading
 if (module.hot) {
   module.hot.accept('./components/App/App', () => {
     const NextApp = require('./components/App/App').default
     ReactDOM.render(
-      //<Provider store={store}>
-      <ApolloProvider client={client}>
+      <Provider store={store}>
         <NextApp />
-      </ApolloProvider>,
-      //</Provider>,
+      </Provider>,
       document.getElementById('root')
     )
   })
+}
+
+// bootstrap the router with initial location
+const initialLocation = store.getState().router;
+if (initialLocation) {
+  store.dispatch(initializeCurrentLocation(initialLocation));
 }
