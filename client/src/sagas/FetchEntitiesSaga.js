@@ -1,5 +1,5 @@
 import { call, put  } from 'redux-saga/effects'
-import * as api from '../Api'
+import * as api from '../Api/ApolloProxy'
 import {
   fetchEntitiesSuccess,
   fetchEntitiesError

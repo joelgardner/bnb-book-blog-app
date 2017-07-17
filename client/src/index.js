@@ -6,9 +6,9 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
 import reducer from './Reducers'
-import sagas from './Sagas'
+import rootSaga from './Sagas/RootSaga'
 import './index.css'
-import { apolloClient } from './Api'
+import { apolloClient } from './Api/ApolloProxy'
 import { routerForBrowser, initializeCurrentLocation } from 'redux-little-router';
 
 // define our routes
@@ -56,8 +56,8 @@ const store = createStore(
   )
 );
 
-// kick off sagas
-sagaMiddleware.run(sagas)
+// kick off rootSaga
+sagaMiddleware.run(rootSaga)
 
 // render app
 ReactDOM.render(

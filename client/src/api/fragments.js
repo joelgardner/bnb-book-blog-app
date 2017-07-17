@@ -1,26 +1,5 @@
 import gql from 'graphql-tag'
 
-// const fragments = {
-//   property: gql`
-//     fragment PropertyListProperty on Property {
-//       id
-//       street1
-//       street2
-//       city
-//       state
-//     }
-//   `
-// }
-
-// const PropertyListQuery = gql`
-//   query ListProperties($args: PropertyInput, $search: SearchParameters) {
-//     listProperties(args: $args, search: $search) {
-//       ... PropertyListProperty
-//     }
-//   }
-//   ${fragments.property}
-// `
-
 export const Property = {
   attributes: gql`
     fragment PropertyAttributes on Property {
@@ -40,7 +19,6 @@ export const Property = {
   `
 }
 
-
 export const Room = {
   attributes: gql`
     fragment RoomAttributes on Room {
@@ -51,6 +29,3 @@ export const Room = {
     }
   `
 }
-
-//export const Property
-//export const Room
