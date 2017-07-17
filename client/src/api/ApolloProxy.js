@@ -12,6 +12,29 @@ export const apolloClient = new ApolloClient({
 
 /**
   @param {Object} args - Map of Property attribute names to values.
+  @returns {Promise<Property>} Uses Apollo to fulfill fetchProperty query.
+*/
+export const fetchProperty = ({ id }) => apolloClient.query({
+  query: gql`
+    query FetchProperty($id: ID!) {
+      fetchProperty(id: $id) {
+        ... PropertyAttributes
+        rooms {
+          ... RoomAttributes
+        }
+      }
+    }
+    ${Fragments.Property.attributes}
+    ${Fragments.Room.attributes}
+  `,
+  variables: {
+    id
+  }
+})
+
+
+/**
+  @param {Object} args - Map of Property attribute names to values.
   @param {Object} search - Map of search parameters.
   @returns {Promise<List<Property>>} Uses Apollo to fulfill listProperties query.
 */

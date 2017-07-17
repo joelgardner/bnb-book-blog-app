@@ -60,7 +60,7 @@ export async function insertOne(collection : string, item : Object) {
 */
 export async function fetchOne(collection : string, id : string) : Object {
   return _try(async () => {
-    return await db.collection(collection).findOne({ id })
+    return await db.collection(collection).findOne({ id: +id })
   })
 }
 

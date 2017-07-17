@@ -80,6 +80,7 @@ input SearchParameters {
 
 type Query {
   fetchUser(id: ID!): User
+  fetchProperty(id: ID!): Property
   listProperties(args: PropertyInput, search: SearchParameters) : [Property]
   listRooms(args: RoomInput, search: SearchParameters) : [Room]
 }

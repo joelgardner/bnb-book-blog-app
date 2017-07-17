@@ -1,18 +1,13 @@
 import React from 'react'
-// import gql from 'graphql-tag'
-// import PropTypes from 'prop-types'
-// import { graphql } from 'react-apollo'
-// import { propType } from 'graphql-anywhere'
+import PropertyListItem from '../PropertyListItem/PropertyListItem'
 
 const PropertyList = ({ properties = [], onFetchMore }) =>
-  <div>
-    <ul className="property-list">
+  <div className="properties-container">
+    <div className="columns is-multiline">
       {properties.map(property =>
-        <li key={property.id}>
-          {property.street1} {property.street2} {property.city} {property.state}
-        </li>
+        <PropertyListItem key={property.id} {...property} />
       )}
-    </ul>
+    </div>
     <button onClick={() => onFetchMore(properties.length)}>Show More</button>
   </div>
 
