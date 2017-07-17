@@ -1,14 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './components/App/App'
+import App from './Components/App/App'
 import registerServiceWorker from './registerServiceWorker'
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
-import reducer from './reducers'
-import sagas from './sagas'
+import reducer from './Reducers'
+import sagas from './Sagas'
 import './index.css'
-import { apolloClient } from './api'
+import { apolloClient } from './Api'
 import { routerForBrowser, initializeCurrentLocation } from 'redux-little-router';
 
 // define our routes
@@ -70,8 +70,8 @@ registerServiceWorker()
 
 // hot-reloading
 if (module.hot) {
-  module.hot.accept('./components/App/App', () => {
-    const NextApp = require('./components/App/App').default
+  module.hot.accept('./Components/App/App', () => {
+    const NextApp = require('./Components/App/App').default
     ReactDOM.render(
       <Provider store={store}>
         <NextApp />

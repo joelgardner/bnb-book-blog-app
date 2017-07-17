@@ -62,14 +62,14 @@ const custom = {
       end: new Date().getTime()
     })
   },
-  listProperties: async (args, context) => {
-    return await Promise.resolve([{
-      id: "asdf",
-      street1: "street1!",
-      street2: "street2!",
-      city: "derpville",
-      state: "tx"
-    }])
+  listProperties: async ({ args = {}, search = {} }, context) => {
+    return resolver({
+      role: 'storage',
+      cmd: 'find',
+      type: 'Property',
+      args,
+      search
+    })
   }
 }
 

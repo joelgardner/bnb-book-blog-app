@@ -96,3 +96,16 @@ export async function deleteOne(collection : string, id : String) : Object {
     return result.value
   })
 }
+
+/**
+  Method deletes objects from datastore.
+  @param {string} collection - Name of the type (or table) to be removed.
+  @param {Object} args - Map of attributes to values.
+  @return {Folktale.Result} - Object wrapping deleted item on success, or error on failure.
+*/
+export async function find(collection : string, args : Object, { skip = 0, searchText } : Object) : Object {
+  return _try(async () => {
+    let result = await db.collection(collection).find(args).skip(skip).limit(20).toArray()
+    return result
+  })
+}

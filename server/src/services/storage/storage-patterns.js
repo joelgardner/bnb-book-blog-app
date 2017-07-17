@@ -1,6 +1,6 @@
 // @flow
 'use strict'
-import { fetchOne, insertOne, updateOne, deleteOne } from './index'
+import { fetchOne, insertOne, updateOne, deleteOne, find } from './index'
 import type { MongoDBConnection } from '../../types/mongo'
 
 const ROLE_NAME = 'storage'
@@ -27,6 +27,11 @@ export default function storage(options) {
 
   .add({ role: ROLE_NAME, cmd: 'deleteOne' }, async (msg, reply) => {
     const result = await deleteOne(msg.type, msg.id, msg.input)
+    reply(result.toJSON())
+  })
+
+  .add({ role: ROLE_NAME, cmd: 'find' }, async (msg, reply) => {
+    const result = await find(msg.type, msg.args, msg.search)
     reply(result.toJSON())
   })
 }

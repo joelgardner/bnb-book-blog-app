@@ -6,10 +6,12 @@ export const fetchEntities = (entityName, args, searchParameters) => ({
   searchParameters
 })
 
-export const fetchEntitiesSuccess = (entityName, entities) => ({
+export const fetchEntitiesSuccess = (entityName, entities, args, searchParameters) => ({
   type: 'FETCH_ENTITIES_SUCCESS',
   entityName,
-  entities
+  entities,
+  args,
+  searchParameters
 })
 
 export const fetchEntitiesError = (entityName, error) => ({

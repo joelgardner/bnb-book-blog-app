@@ -1,5 +1,5 @@
 import React from 'react'
-import PropertyListContainer from '../../containers/PropertyListContainer'
+import PropertyListContainer from '../PropertyList/PropertyListContainer'
 
 const App = () =>
   <div>
