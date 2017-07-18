@@ -1,23 +1,24 @@
 
-export const fetchEntities = (entityName, args, searchParameters) => ({
+export const fetchEntities = (entityName, apiAction, args = {}, searchParameters = {}) => ({
   type: 'FETCH_ENTITIES',
   entityName,
+  apiAction,
   args,
   searchParameters
 })
 
-export const fetchEntitiesSuccess = (entityName, entities, args, searchParameters) => ({
+export const fetchEntitiesSuccess = (entityName, entities, batchIndex) => ({
   type: 'FETCH_ENTITIES_SUCCESS',
   entityName,
   entities,
-  args,
-  searchParameters
+  batchIndex
 })
 
-export const fetchEntitiesError = (entityName, error) => ({
+export const fetchEntitiesError = (entityName, error, batchIndex) => ({
   type: 'FETCH_ENTITIES_ERROR',
   entityName,
-  error
+  error,
+  batchIndex
 })
 
 export const fetchEntityDetails = (entityName, args, searchParameters) => ({

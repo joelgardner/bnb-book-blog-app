@@ -5,7 +5,8 @@ import registerServiceWorker from './registerServiceWorker'
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
-import reducer from './Reducers'
+//import reducer from './Reducers'
+import entitiesReducer from './Reducers/Entities'
 import rootSaga from './Sagas/RootSaga'
 import './index.css'
 import { apolloClient } from './Api/ApolloProxy'
@@ -44,7 +45,7 @@ const {
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(
   combineReducers({
-    app     : reducer,
+    app     : entitiesReducer,
     router  : routerReducer,
     apollo  : apolloClient.reducer()
   }),

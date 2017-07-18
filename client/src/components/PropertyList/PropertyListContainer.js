@@ -1,17 +1,26 @@
 import PropertyList from './PropertyList'
 import { connect } from 'react-redux'
 import { viewProperty, fetchEntities } from '../../Actions'
+import R from 'ramda'
 
 const PropertyContainer = connect(
-  state => ({
-    properties: state.app.properties
-  }),
+  state => {
+    let st = state.app.Property.toJS()
+    return {
+      properties: R.flatten(st.batches.slice(0, st.showing)),
+      args: st.args,
+      searchParameters: st.searchParameters
+    }
+  },
   dispatch => ({
     onSelectProperty(id) {
       dispatch(viewProperty(id))
     },
-    onFetchMore(skip) {
-      dispatch(fetchEntities('Property', {}, { skip }))
+    onFetchMore() {
+      dispatch(fetchEntities('Property', 'listProperties'))
+    },
+    onChangeSort(sortAsc) {
+      //dispatch(apiCall('listProperties', {}, { sortAsc }))
     }
   })
 )(PropertyList)

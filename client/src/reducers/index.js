@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
+import { List, Map } from 'immutable'
 
-//const FETCH_LIMIT = 6
+const FETCH_LIMIT = 20
 
 function properties(state = [], action) {
   if (action.entityName !== 'Property') return state
@@ -22,7 +23,35 @@ function selectedProperty(state = null, action) {
   }
 }
 
+const initialState = Map({
+  properties: Map({
+    items: List(),
+    args: Map(),
+    searchParameters: Map({
+      sortKey: 'id',
+      sortAsc: true,
+      searchText: '',
+      first: FETCH_LIMIT,
+      skip: 0
+    })
+  }),
+})
+function entities(state = initialState, action) {
+  switch(action.type) {
+    case 'APOLLO_QUERY_RESULT':
+      if (action.operationName === 'ListProperties') {
+        return state.updateIn(
+          ['properties', 'items'],
+          items => items.concat(action.result.data.listProperties)
+        )
+      }
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   properties,
-  selectedProperty
+  selectedProperty,
+  entities
 })
