@@ -1,7 +1,7 @@
 import React from 'react'
 import PropertyListItem from '../PropertyListItem/PropertyListItem'
 
-const PropertyList = ({ properties = [], searchParameters = {}, onFetchMore, onToggleSort }) => console.log("ASDF", properties) ||
+const PropertyList = ({ properties = [], searchParameters = {}, onFetchMore, onToggleSort }) =>
   <div className="properties-container">
     <div className="columns is-multiline">
       {properties.map(property =>

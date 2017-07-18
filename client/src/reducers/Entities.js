@@ -27,6 +27,7 @@ function properties(state = initialPropertiesState, action) {
         st.update('showing', showing => showing + 1)
           .update('searchParameters', searchParameters => searchParameters.merge(action.searchParameters))
           .update('args', args => args.merge(action.args))
+          .update('batches', batches => batches.push([]))
       })
     case 'FETCH_ENTITIES_SUCCESS':
       return state.update('batches', batches => batches.set(action.batchIndex, action.entities))
