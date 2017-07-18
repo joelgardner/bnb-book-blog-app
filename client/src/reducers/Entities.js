@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 import { List, Map } from 'immutable'
+import { FETCH_LIMIT } from '../Constants'
 
-const FETCH_LIMIT = 20
-
-const initialPropertiesState = Map({
+const initialPropertyState = Map({
+  selectedItem: null,
   showing: -1,
   batches: List(),
   args: Map(),
@@ -16,12 +16,8 @@ const initialPropertiesState = Map({
   })
 })
 
-function properties(state = initialPropertiesState, action) {
+function properties(state = initialPropertyState, action) {
   switch(action.type) {
-    // case 'APOLLO_QUERY_RESULT':
-    //   if (action.operationName === 'ListProperties') {
-    //     return state.update('items', items => items.concat(action.result.data.listProperties))
-    //   }
     case 'FETCH_ENTITIES':
       return state.withMutations(st => {
         st.update('showing', showing => showing + 1)
@@ -31,6 +27,8 @@ function properties(state = initialPropertiesState, action) {
       })
     case 'FETCH_ENTITIES_SUCCESS':
       return state.update('batches', batches => batches.set(action.batchIndex, action.entities))
+    case 'FETCH_ENTITY_DETAILS_SUCCESS':
+      return state.set('selectedItem', action.entity)
     default:
       return state
   }

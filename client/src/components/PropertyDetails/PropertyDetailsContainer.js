@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 const PropertyDetailsContainer = connect(
   state => ({
-    property: state.app.selectedProperty
+    property: state.app.Property.get('selectedItem')
   }),
   dispatch => ({
     // onSelectProperty(id) {

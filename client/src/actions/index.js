@@ -21,19 +21,18 @@ export const fetchEntitiesError = (entityName, error, batchIndex) => ({
   batchIndex
 })
 
-export const fetchEntityDetails = (entityName, args, searchParameters) => ({
+export const fetchEntityDetails = (entityName, apiAction, args = {}) => ({
   type: 'FETCH_ENTITY_DETAILS',
   entityName,
-  args,
-  searchParameters
+  apiAction,
+  args
 })
 
-export const fetchEntityDetailsSuccess = (entityName, entity, args, searchParameters) => ({
+export const fetchEntityDetailsSuccess = (entityName, entity, args) => ({
   type: 'FETCH_ENTITY_DETAILS_SUCCESS',
   entityName,
   entity,
-  args,
-  searchParameters
+  args
 })
 
 export const fetchEntityDetailsError = (entityName, error) => ({

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { viewProperty, fetchEntities } from '../../Actions'
 import R from 'ramda'
 
-const PropertyContainer = connect(
+const PropertyListContainer = connect(
   state => {
     let st = state.app.Property.toJS()
     return {
@@ -25,4 +25,4 @@ const PropertyContainer = connect(
   })
 )(PropertyList)
 
-export default PropertyContainer
+export default PropertyListContainer
