@@ -1,19 +1,19 @@
 import { combineReducers } from 'redux'
-import { List, Map } from 'immutable'
+import { List, Map, fromJS } from 'immutable'
 import { FETCH_LIMIT } from '../Constants'
 
-const initialPropertyState = Map({
+const initialPropertyState = fromJS({
   selectedItem: null,
   showing: -1,
-  batches: List(),
-  args: Map(),
-  searchParameters: Map({
+  batches: [],
+  args: {},
+  searchParameters: {
     sortKey: 'id',
     sortAsc: true,
     searchText: '',
     first: FETCH_LIMIT,
     skip: 0
-  })
+  }
 })
 
 function properties(state = initialPropertyState, action) {
