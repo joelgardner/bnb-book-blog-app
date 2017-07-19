@@ -8,10 +8,7 @@ import {
 export default function fetchEntityDetailsSaga(entityName, apiAction) {
   return function* (action) {
     try {
-      // call the API, get results
       const result = yield call(api[apiAction], action.args)
-
-      // trigger a FETCH_ENTITIES_SUCCESS action, with the results and search params
       yield put(fetchEntityDetailsSuccess(
         action.entityName,
         result.data[apiAction],

@@ -16,7 +16,6 @@ export default function fetchEntitiesSaga(entityName, apiAction) {
         action.args,
         R.merge(action.searchParameters, { skip: FETCH_LIMIT * batchIndex })
       )
-
       yield put(fetchEntitiesSuccess(
         action.entityName,
         result.data[apiAction],

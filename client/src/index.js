@@ -5,34 +5,12 @@ import registerServiceWorker from './registerServiceWorker'
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
-//import reducer from './Reducers'
 import entitiesReducer from './Reducers/Entities'
 import rootSaga from './Sagas/RootSaga'
 import './index.css'
 import { apolloClient } from './Api/ApolloProxy'
 import { routerForBrowser, initializeCurrentLocation } from 'redux-little-router';
-
-// define our routes
-const routes = {
-  '/': {
-    title: 'Properties'
-  },
-  '/property/:id' : {
-    title: 'Property Details'
-  },
-  '/room/:id': {
-    title: 'Room details'
-  },
-  '/manage': {
-    title: 'Manage Properties',
-    '/:id': {
-      title: 'Manage Property'
-    },
-    '/room/:id': {
-      title: 'Manage Room'
-    }
-  }
-}
+import routes from './Routes'
 
 // initialize our router
 const {
