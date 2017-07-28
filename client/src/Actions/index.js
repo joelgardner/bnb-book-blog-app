@@ -1,4 +1,8 @@
 
+export const showMore = () => ({
+  type: 'SHOW_MORE'
+})
+
 export const fetchEntities = (entityName, apiAction, args = {}, searchParameters = {}) => ({
   type: 'FETCH_ENTITIES',
   entityName,

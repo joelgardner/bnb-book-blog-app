@@ -3,12 +3,14 @@ import * as api from '../Api/ApolloProxy'
 import { FETCH_LIMIT } from '../Constants'
 import {
   fetchEntitiesSuccess,
-  fetchEntitiesError
+  fetchEntitiesError,
+  showMore
 } from '../Actions'
 import R from 'ramda'
 
 export default function fetchEntitiesSaga(entityName, apiAction) {
   return function* (action) {
+    yield put(showMore())
     const batchIndex = yield select(st => st.app[entityName].get('showing'))
     try {
       const result = yield call(

@@ -1,0 +1,13 @@
+
+span.invalid {
+  color:#f00;
+  position:relative;
+  right:10px;
+}
+
+
+span.valid {
+  color:#0f0;
+  position:relative;
+  right:10px;
+}
