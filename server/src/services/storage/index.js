@@ -106,11 +106,6 @@ export async function deleteOne(collection : string, id : String) : Object {
 export async function find(collection : string, args : Object, { skip = 0, searchText } : Object) : Object {
   return _try(async () => {
     let result = await db.collection(collection).find(args).skip(skip).limit(20).toArray()
-    //if () {
-      return await new Promise(resolve => {
-        setTimeout(() => resolve(result), !(skip % 2) ? 1000 : 2000)
-      })
-    //}
     return result
   })
 }

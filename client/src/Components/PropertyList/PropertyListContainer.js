@@ -1,14 +1,13 @@
 import PropertyList from './PropertyList'
 import { connect } from 'react-redux'
-import { fetchEntities, showMore } from '../../Actions'
+import { fetchEntities } from '../../Actions'
 import React from 'react'
-import { FETCH_LIMIT } from '../../Constants'
 
 /*
   mapImmutableJsPropsToProps is a Higher-Order-Component which extracts props
   from the ImmutableJS object passed in from the Redux container below.
 */
-const mapImmutableJsPropsToProps = WrappedComponent => ({ showing, properties, ...uiEvents }) =>
+const mapImmutableJsPropsToProps = WrappedComponent => ({ properties, ...uiEvents }) =>
   <WrappedComponent {...{
     properties: properties.toJS(),
     ...uiEvents
@@ -25,7 +24,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onFetchMore() {
-    //dispatch(showMore())
     dispatch(fetchEntities('Property', 'listProperties'))
   },
   onChangeSort(sortAsc) {
